@@ -17,10 +17,56 @@ so we made a<br>
 **t**.ool<br>
 to help with that :D
 
-Team name: drives the point that we need a tool to help us understand acronyms
+This idiotic team name drives home the point that 
+newcomers (e.g. new employees, interns, non-tech people) 
+are sometimes met with complex and confusing
+abbreviations, acronyms, or terms which seem to be from
+a different language.
+
+Our tool provides a dictionary-style solution: a simple, 
+convenient interface where users can search for relevant definitions
+and help resources about unfamiliar terms.
 
 
-## Setup for Devs:
+## Setup for Devs
 
 1. Clone project
-2. `pip install requirements.txt`
+2. In project directory: `pip install requirements.txt`
+3. Open project directory in editor, and you're good to go!
+
+## Project Overview
+
+### Tech Stack
+- Vanilla HTML-JS-CSS frontend 
+- Served locally over Python Flask server
+- AWS DynamoDB database
+  - Data:
+    - Terms
+    - Context/tags/documentation/resources for terms
+  - Query Operations:
+    - Read terms from database
+    - Write new term to database
+    - Change term information
+
+### Flow
+
+```
+| User Interface |
+        ^
+        |
+Search & sort queries
+        |
+        v
+|  Flask Server  |
+        ^
+        |
+  Query Operations
+        |
+        v
+|  AWS Database  |
+
+```
+
+## Extensions & Scalability
+
+TODO: talk abt potential developments and expansions to the app 

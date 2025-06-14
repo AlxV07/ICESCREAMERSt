@@ -24,4 +24,3 @@ Team name: drives the point that we need a tool to help us understand acronyms
 
 1. Clone project
 2. `pip install requirements.txt`
-3. 

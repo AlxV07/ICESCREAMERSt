@@ -23,9 +23,9 @@ are sometimes met with complex and confusing
 abbreviations, acronyms, or terms which seem to be from
 a different language.
 
-Our tool provides a dictionary-style solution: a simple, 
-convenient interface where users can search for relevant definitions
-and help resources about unfamiliar terms.
+ICESCREAMERSt (pronounced ice-screamers-tee) provides a simple solution: a convenient interface 
+where users can quickly search find out what
+unfamiliar terms mean.
 
 
 ## Setup for Devs

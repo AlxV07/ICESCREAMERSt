@@ -10,5 +10,9 @@ async function search() {
 
   const results = await response.json();
   const resultsDiv = document.getElementById("results");
-  resultsDiv.innerHTML = results.map(r => `<p><strong>${r.expansion}</strong>: ${r.description}</p>`).join("");
+
+  resultsDiv.innerHTML = results.length
+    ? results.map(r => `<p><strong>${r.expansion}</strong>: ${r.description}</p>`).join("")
+    : "<p>No results found.</p>";
 }
+

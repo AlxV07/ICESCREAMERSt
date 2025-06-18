@@ -5,9 +5,13 @@ import json
 app = Flask(__name__)
 
 # Load acronym database TODO: temp for testing, backend devs you implement database stuff :D
-with open("data/acronyms.json") as f:
-    acronyms = json.load(f)
-
+# with open("data/acronyms.json") as f:
+#     acronyms = json.load(f)
+acronyms = json.loads("""
+{
+"ABC": "Amazing Bacon Cheese"
+}
+""")
 
 @app.route("/")
 def index():

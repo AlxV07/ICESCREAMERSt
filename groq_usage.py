@@ -96,3 +96,36 @@ def get_search_response(query: str, tags: list) -> str:
         stop=None,
     )
     return completion.choices[0].message.content
+
+def validate_result(result: dict, data: list) -> dict:
+    validated_matches = []
+    matches = result['matches']
+    for match in matches:
+        groqAcronym = match['Acronym']
+        groqTerm = match['Term']
+        groqDefinition = match['Definition']
+        groqTags = match['Tags']
+        groqMisc = match['Misc']
+        matchVerified = False
+
+        for dataRow in data:
+            acronym = dataRow['acronym']
+            term = dataRow['term']
+            definition = dataRow['definition']
+            tags = dataRow['tags']
+            misc = dataRow['misc']
+            if (
+                groqAcronym == acronym
+                and groqTerm == term
+                and groqDefinition == definition
+                and groqTags == tags
+                and groqMisc == misc
+            ):
+                matchVerified = True
+                break
+
+        if matchVerified: validated_matches.append(match)
+
+    result['matches'] = validated_matches
+
+    return result

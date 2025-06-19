@@ -52,6 +52,7 @@ def respond_to_search_groq_query():
     :return: json-formatted response to send to frontend
     """
     data = request.json
+    acronyms = load_acronyms()
 
     acronym = data.get("acronym", "").upper()
     tags = data.get("tags", "").lower().split()
@@ -62,6 +63,7 @@ def respond_to_search_groq_query():
         print(f"Results from Groq: {results}")
         if not results:
             return jsonify({"error": "No results found"}), 404
+        results = groq_usage.validate_result(results, acronyms)
         return jsonify(results)
     except Exception as e:
         print(f"Error parsing Groq response: {e}")
@@ -124,4 +126,4 @@ def save_acronym(acronym: str, term: str, definition: str, tags: list, misc: lis
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run()

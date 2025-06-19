@@ -1,14 +1,21 @@
 {
   "manifest_version": 3,
-  "name": "Highlight Pop-Up",
+  "name": "ICESCREAMERSt",
   "version": "1.0",
-  "description": "Shows a popup when you highlight a word.",
-  "permissions": ["scripting"],
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"],
-      "run_at": "document_start"
-    }
-  ]
+  "description": "The all-functional abbreviation tool!",
+  "permissions": ["scripting", "activeTab"],
+  "host_permissions": ["http://localhost:8000/*"], 
+  "action": {
+      "default_popup": "popup.html",
+      "default_icon": {
+        "16": "ice_cream.png",
+        "48": "ice_cream.png",
+        "128": "ice_cream.png"
+      }
+  },
+  "icons": {
+      "16": "ice_cream.png",
+      "48": "ice_cream.png",
+      "128": "ice_cream.png"
+  }   
 }

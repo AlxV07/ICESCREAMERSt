@@ -1,10 +1,18 @@
-import csv
-
+import csv, ast
+import os
 from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 CSV_FILE = "data/acronyms.csv"
 
+def parse_line(raw_acronym):
+    short=raw_acronym['Acronym']
+    term=raw_acronym['Term']
+    definition = raw_acronym['Definition']
+    tags=ast.literal_eval(raw_acronym['Tags'])
+    misc=ast.literal_eval(raw_acronym['Misc'])
+    new_acronym = {"acronym":short, "term":term, "defintion":definition, "tags":tags, 'misc':misc}
+    return new_acronym
 
 @app.route("/")
 def index():
@@ -12,18 +20,11 @@ def index():
 
 
 def load_acronyms():
-    # TODO: Skanda replace below w/ your parsing method
     acronyms = []
     with open(CSV_FILE, 'r', encoding='utf-8') as f:
         reader = csv.DictReader(f)
         for row in reader:
-            acronyms.append({
-                'acronym': row['Acronym'].upper(),
-                'term': row['Term'],
-                'definition': row['Definition'],
-                'tags': row['Tags'].lower().split(),
-                'misc': row['Misc'].lower().split()
-            })
+            acronyms.append(parse_line(row))
     return acronyms
 
 
@@ -39,6 +40,7 @@ def respond_to_search_query():
     tags = data.get("tags", "").lower().split()
 
     results = find_results(acronym, tags)
+    print(results, type(results))
     return jsonify(results)
 
 
@@ -50,11 +52,18 @@ def find_results(target_acronym: str, tags: list) -> list:
     """
     acronyms = load_acronyms()
 
-    # Basic relevance sort by context keyword match (placeholder)
-    results = [entry for entry in acronyms if entry['acronym'] == target_acronym]
-    results_sorted = sorted(results, key=lambda x: sum(keyword in x["tags"] for keyword in tags), reverse=True)
-    return results_sorted
 
+    results_sorted = []
+    for entry in acronyms:
+        score = 0
+        if entry['acronym'] == target_acronym:
+            score += 10
+        score += sum(keyword in entry["tags"] for keyword in tags)
+        results_sorted.append((entry, score))
+
+    # Sort results by score
+    results_sorted = sorted(results_sorted, key=lambda x: x[1], reverse=True)
+    return [entry for entry, score in results_sorted]
 
 @app.route("/define", methods=["POST"])
 def define_acronym():
@@ -88,4 +97,4 @@ def save_acronym(acronym: str, term: str, definition: str, tags: list, misc: lis
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000)

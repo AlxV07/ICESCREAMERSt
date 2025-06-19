@@ -1,12 +1,27 @@
 import csv, os
+import ast
+CSV_FILE = r'C:\Users\aruns\Documents\GitHub\ICESCREAMERSt\data\acronyms.csv'
 
-test_csv = 'playing/test.csv'
+def parse_line(raw_acronym):
+    short=raw_acronym['acronym']
+    term=raw_acronym['term']
+    definition = raw_acronym['definition']
+    tags=ast.literal_eval(raw_acronym['tags'])
+    new_acronym = {"acronym":short, "term":term, "defintion":definition, "tags":tags}
+    return new_acronym
 
-if not os.path.exists(test_csv):
-    with open(test_csv, 'w', newline='', encoding='utf-8') as f:
-        writer = csv.writer(f)
-        writer.writerow(['A', 'B', 'C', 'D'])
-
-with open(test_csv, 'a', newline='', encoding='utf-8') as f:
-    writer = csv.writer(f)
-    writer.writerow(['A,1', 'B1', 'C1', 'D1'])
+acronyms = []
+with open(CSV_FILE, 'r', encoding='utf-8') as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        acronyms.append({
+            'acronym': row['Acronym'].upper(),
+            'term': row['Term'],
+            'definition': row['Definition'],
+            'tags': row['Tags'].lower()
+        })
+print(f"Loaded {len(acronyms)} acronyms from {CSV_FILE}")
+for acronym in acronyms:
+    #print(f"Acronym: {acronym['acronym']}, Term: {acronym['term']}, Definition: {acronym['definition']}, Tags: {acronym['tags']}")
+    x=parse_line(acronym)
+    print(x)

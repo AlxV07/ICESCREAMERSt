@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request, jsonify
 import csv
-import os
+
+from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
@@ -13,6 +13,7 @@ def index():
 
 
 def load_acronyms():
+    # TODO: Skanda replace below w/ your parsing method
     acronyms = []
     with open(CSV_FILE, 'r', encoding='utf-8') as f:
         reader = csv.DictReader(f)

@@ -13,7 +13,7 @@ async function search() {
     body: JSON.stringify({ acronym, tags })
   });
   const results = await response.json();
-  console.log(results)
+  console.log(results);
   await handleSearchResponse(results);
 }
 

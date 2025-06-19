@@ -13,26 +13,84 @@
 </head>
 
 <body>
+
+
   <!-- Header Section -->
   <div class="header">
       <h1>The Most Future-Proof, Long-Range, and Inspiring Database</h1>
       <p>Discover, learn, and contribute acronym definitions</p>
-</div>
+  </div>
+
+
     <!--Tab Section-->
+
+
     <div class="container">
       <div class="tab-container">
         <div class="tab-nav">
           <button class="tab-button active" data-tab="manual">Manual Entry</button>
           <button class="tab-button" data-tab="pdf">PDF Upload</button>
         </div>
-
-      <div class="container">
-        <div class="tab-container-manual">
-          <h1>Manual Entry</h1>
-        </div>
       </div>
+    <!--Manual Entry-->
+      
+    <div class="tab-content active" id="manual-tab">
+      <h2 style="text-align: center; margin-bottom: 20px;">Add New Acronym</h2>
+      <form id="addAcronymForm">
+          <div class="form-row">
+              <div class="form-group">
+                  <label for="acronym">Acronym *</label>
+                  <input type="text" id="acronym" class="form-input" required placeholder="e.g., API">
+              </div>
+              <div class="form-group">
+                  <label for="definition">Definition *</label>
+                  <input type="text" id="definition" class="form-input" required placeholder="e.g., Application Programming Interface">
+              </div>
+              <div class="form-group">
+                  <label for="context">Tags</label>
+                  <select id="context" class="form-input" multiple>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                  </select>
+              </div>
+          </div>
+          <div class="form-row description-row">
+              <div class="form-group" style="grid-column: 1 / -1;">
+                  <label for="description">Additional Description (Optional)</label>
+                  <textarea id="description" class="form-input" placeholder="Provide more context, usage examples, or related information"></textarea>
+              </div>
+          </div>
+          <div style="text-align: center;">
+              <button type="submit" class="submit-btn">Add Acronym</button>
+          </div>
+      </form>
     </div>
+  </div>
+
     <!--PDF Entry-->
+  
+    <div class="tab-content" id="pdf-tab">
+      <h2 style="text-align: center; margin-bottom: 20px;">Extract Acronyms from PDF</h2>
+      
+      <div class="upload-area" id="uploadArea">
+          <div class="upload-icon">📄</div>
+          <div class="upload-text">Drop PDF file here or click to browse</div>
+          <div class="upload-subtext">Supports PDF files up to 10MB</div>
+          <input type="file" id="pdfFileInput" class="file-input" accept=".pdf">
+      </div>
+
+      <div id="selectedFileInfo" class="selected-file" style="display: none;">
+          <div class="file-info">
+              <div class="file-icon">📄</div>
+              <div class="file-details">
+                  <div class="file-name" id="fileName"></div>
+                  <div class="file-size" id="fileSize"></div>
+              </div>
+          </div>
+          <button type="button" class="remove-file" id="removeFile">×</button>
+      </div>
+
     <!--Search Bar-->
     <div class="main">
       <div class="search-box">

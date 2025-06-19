@@ -93,7 +93,8 @@ def find_results(target_acronym: str, tags: list) -> list:
             keyword.strip().lower() in [tag.strip().lower() for tag in entry["tags"]]
             for keyword in tags
         )
-        
+    
+    
         if score > 0:
             results_sorted.append((entry, score))
 

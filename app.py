@@ -1,8 +1,6 @@
-import ast
-import csv
-
+import csv, ast
+import os
 from flask import Flask, render_template, request, jsonify
-
 import groq_usage
 
 app = Flask(__name__)
@@ -43,7 +41,6 @@ def respond_to_search_query():
 
     acronym = data.get("acronym", "").upper()
     tags = data.get("tags", "").lower().split()
-    print(f"Searching for acronym: {acronym} with tags: {tags}")
     results = find_results(acronym, tags)
     return jsonify(results)
 
@@ -92,6 +89,7 @@ def find_results(target_acronym: str, tags: list) -> list:
         elif entry['acronym'].upper() in target_acronym.upper() or target_acronym.upper() in entry['acronym'].upper():
             score += 3
 
+
         tag_score = sum(keyword.strip().lower() in [tag.strip().lower() for tag in entry["tags"]] for keyword in tags)
         score += tag_score
 
@@ -102,9 +100,7 @@ def find_results(target_acronym: str, tags: list) -> list:
             if score > 0:
                 results_sorted.append((entry, score))
 
-    # Sort results by score
     results_sorted = sorted(results_sorted, key=lambda x: x[1], reverse=True)
-    print(results_sorted)
     return [entry for entry, score in results_sorted]
 
 
@@ -138,6 +134,27 @@ def save_acronym(acronym: str, term: str, definition: str, tags: list, misc: lis
         info = str(e)
     return {"status": "success" if success else "error", "info": info}
 
+def find_all_tags() -> list:
+    """
+    :return: list of all tags in the database
+    """
+    acronyms = load_acronyms()
+    tags = set()
+    for entry in acronyms:
+        for tag in entry['tags']:
+            tags.add(tag.strip().lower())
+    return sorted(list(tags))
+
+@app.route("/tags", methods=["POST"])
+def find_all_tags_endpoint() -> list:
+    """
+    :return: list of all tags in the database that start with the given prefix
+    """
+    data = request.json
+    prefix = data.get("payload", "").lower()
+    tags = find_all_tags()
+    filtered_tags = [tag for tag in tags if tag.startswith(prefix)]
+    return jsonify(filtered_tags)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)

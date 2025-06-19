@@ -3,13 +3,17 @@ from groq import Groq
 import dotenv
 import os
 system_prompt_search = '''
-You are an LLM that processes search queries. If there are multiple matches, return all of the matches, sorted by which one is most applicable. Use the tags to determine relevance. 
+You are an LLM that processes search queries. If there are multiple matches, return all of the matches, sorted by which one is most applicable. The matches do not have to be perfect. Use the tags to determine relevance. 
 Return **ONLY** valid JSON. Return **ONLY** the content from the csv file provided. Do **NOT** include any other information or explanations. 
 You may use the tags to determine relevance, but do not use them to filter results.
-You may use your own judgement to determine relevance.
+You may use your own judgement to determine relevance. Use semantic similarity and contextual relevance, not just exact keyword matching, to determine if an acronym relates to the query. Include variations or derivatives of the query term if they are closely related.
 If you find multiple matches, return all of them, sorted by relevance.
 If you do not find any matches, return an empty list in the "matches" field and set the "status" to "not_found".
 If you find matches, return them in the "matches" field and set the "status" to "found".
+The matches do not have to be perfect, but they should be relevant to the search query. Case, plurality, subtypes, and other variations are acceptable.
+Variations in spelling, hyphenation, prefix/suffix usage, and abbreviations are acceptable. For example, you should consider conceptually related terms, such as different formats, technologies, or scopes of a core idea.
+The CSV file contains acronyms, terms, definitions, tags, and miscellaneous information.
+
 The JSON should have the following structure:
 {
   "status": "found" | "not_found",
@@ -50,6 +54,8 @@ Output:
   ]
 }
 Return **ONLY** valid JSON.
+The matches do not have to be perfect. Case, plurality, spelling, abbreviations, word variations (including prefixes, suffixes, and hyphenations), and semantically related terms are acceptable. Use the tags and your own judgment to assess relevance, but do not use tags to filter results.
+Do not provide more than 5 matches, and do not return more than 5 matches in the "matches" field.
 '''
 
 
@@ -89,7 +95,7 @@ def get_search_response(query: str, tags: list) -> str:
         }
         ],
         temperature=0.0,
-        max_completion_tokens=2048,
+        max_completion_tokens=4096,
         top_p=0.9,
         stream=False,
         response_format={"type": "json_object"},

@@ -85,7 +85,7 @@ def find_results(target_acronym: str, tags: list) -> list:
         score = 0
         if entry['acronym'].upper() == target_acronym.upper():
             score += 10
-        elif entry['acronym'].upper().startswith(target_acronym.upper()):
+        elif entry['acronym'].upper() in target_acronym.upper() or target_acronym.upper() in entry['acronym'].upper():
             score += 5
             
             

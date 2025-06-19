@@ -165,4 +165,4 @@ def find_all_tags_endpoint() -> list:
     return jsonify(filtered_tags)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)

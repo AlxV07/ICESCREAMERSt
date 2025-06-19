@@ -3,13 +3,13 @@ from groq import Groq
 import dotenv
 import os
 system_prompt_search = '''
-You are a llm that processes search queries. If there are multiple matches, return all of the matches, sorted by which one you think is most applicable using the tags. 
+You are an LLM that processes search queries. If there are multiple matches, return all of the matches, sorted by which one is most applicable. Use the tags to determine relevance. 
 Return **ONLY** valid JSON. Return **ONLY** the content from the csv file provided. Do **NOT** include any other information or explanations. 
 You may use the tags to determine relevance, but do not use them to filter results.
-You may use your own judgement to determine relevance, but do not use any other data or information outside of the csv file provided.
-If you cannot find any matches, return set "status" to "not_found". If you find matches, set "status" to "found", even if the matches are not perfect.
-If the acronym provided is a prefix of one found in the csv, return the full acronym found in the csv, with all of its data.
-For example, if the user searches for "QS", and the csv contains "QSR" and "QSRP", return both full "QSR" entry and the "QSRP" entry, but the "QSRP" entry should have a lower relevance score. The prefix itself should not appear in the results whatsoever.
+You may use your own judgement to determine relevance.
+If you find multiple matches, return all of them, sorted by relevance.
+If you do not find any matches, return an empty list in the "matches" field and set the "status" to "not_found".
+If you find matches, return them in the "matches" field and set the "status" to "found".
 The JSON should have the following structure:
 {
   "status": "found" | "not_found",
@@ -49,7 +49,7 @@ Output:
     }
   ]
 }
-
+Return **ONLY** valid JSON.
 '''
 
 
@@ -73,8 +73,8 @@ def get_search_response(query: str, tags: list) -> str:
     elif len(tags) == 1:
         tag_prompt = f'The tag associated with the search is: {tags[0]}'
     else:
-      tag_prompt=f'Here are the tags associated with the search: {", ".join(tags)}'
-    prompt_user=f"What does {query} stand for? {tag_prompt}"
+        tag_prompt = f"Here are the tags associated with the search: {', '.join(tags)}"
+    prompt_user = f"What does {query} stand for? {tag_prompt} Return **ONLY** valid JSON."
     print(f"Prompt to Groq: {prompt_user}")
     completion = client.chat.completions.create(
         model="meta-llama/llama-4-scout-17b-16e-instruct",
@@ -96,3 +96,36 @@ def get_search_response(query: str, tags: list) -> str:
         stop=None,
     )
     return completion.choices[0].message.content
+
+def validate_result(result: dict, data: list) -> dict:
+    validated_matches = []
+    matches = result['matches']
+    for match in matches:
+        groqAcronym = match['Acronym']
+        groqTerm = match['Term']
+        groqDefinition = match['Definition']
+        groqTags = match['Tags']
+        groqMisc = match['Misc']
+        matchVerified = False
+
+        for dataRow in data:
+            acronym = dataRow['acronym']
+            term = dataRow['term']
+            definition = dataRow['definition']
+            tags = dataRow['tags']
+            misc = dataRow['misc']
+            if (
+                groqAcronym == acronym
+                and groqTerm == term
+                and groqDefinition == definition
+                and groqTags == tags
+                and groqMisc == misc
+            ):
+                matchVerified = True
+                break
+
+        if matchVerified: validated_matches.append(match)
+
+    result['matches'] = validated_matches
+
+    return result

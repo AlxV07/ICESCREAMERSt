@@ -7,7 +7,7 @@ const API_BASE_URL = "http://localhost:5000/api";
 
 // Initialize the application
 document.addEventListener("DOMContentLoaded", function () {
-  define();
+ // define();
   setupeventlisters();
   setupPDFUpload();
 });
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
-
+/*
 async function define() {
   const acronym = document.getElementById("defineAcronym").value;
   const term = document.getElementById("defineTerm").value;
@@ -61,7 +61,7 @@ async function define() {
   console.log(results);
   await handleDefineResponse(results);
 }
-
+*/
 // Setting up the PDF tab
 function setupPDFUpload() {
   const uploadArea = document.getElementById("uploadArea");
@@ -163,19 +163,4 @@ async function extractAcronymsFromPDF() {}
 
 // === Frontend Util Methods ===
 
-async function handleSearchResponse(response) {
-  /*
-  Handles search-query-response from endpoint
-  response: search-query-response in established data format
-  */
-  const resultsDiv = document.getElementById("results");
-  console.log(response);
-  resultsDiv.innerHTML = JSON.stringify(response);
-  // TODO: Temporary; just displaying stringified display
-  // change to setting innerHTML to be styled response
-}
-
-async function handleDefineResponse(response) {
-  // TODO: Implement
-}
 

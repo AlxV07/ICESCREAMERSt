@@ -1,8 +1,23 @@
 from groq import Groq
 system_prompt_search = '''
 You are a llm that processes search queries. If there are multiple matches, return all of the matches, sorted by which one you think is most applicable using the tags. 
-Return **ONLY** valid JSON. 
-Here is an example. Choose one of the status codes to output. 
+Return **ONLY** valid JSON. Return **ONLY** the content from the csv file provided. Do **NOT** include any other information or explanations.
+The JSON should have the following structure:
+{
+  "status": "found" | "not_found",
+  "matches": [
+    {
+      "Acronym": "string",
+      "Term": "string",
+      "Definition": "string",
+      "Tags": ["string", ...],
+      "Misc": ["string", ...],
+      "relevance": float
+    },
+    ...
+  ]
+}
+Here is an example. 
 {
   "status": "found",
   "matches": [
@@ -26,6 +41,7 @@ Here is an example. Choose one of the status codes to output.
 }
 
 '''
+
 def get_api_key():
     # Replace with your actual method of retrieving the API key
     return "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"

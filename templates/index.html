@@ -24,141 +24,68 @@
 
 
 <div class="container">
-  <div class="tab-container">
-    <div class="tab-nav">
-      <button class="tab-button active" data-tab="manual">Manual Entry</button>
-      <button class="tab-button" data-tab="pdf">PDF Upload</button>
-    </div>
-  </div>
 
-  <!--Manual Entry-->
-  
-<div class="tab-content active" id="manual-tab">
-  <h2 style="text-align: center; margin-bottom: 20px;">Add New Acronym</h2>
-  <form id="addAcronymForm">
-      <div class="form-row">
-          <div class="form-group">
-              <label for="acronym">Acronym *</label>
-              <input type="text" id="acronym" class="form-input" required placeholder="e.g., API">
-          </div>
-          <div class="form-group">
-              <label for="definition">Definition *</label>
-              <input type="text" id="definition" class="form-input" required placeholder="e.g., Application Programming Interface">
-          </div>
-          <div class="form-group">
-              <label for="tags_manual">Tags</label>
-              <select id="tags_manual" class="form-input">
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-              </select>
-          </div>
-      </div>
-      <div class="form-row description-row">
-          <div class="form-group" style="grid-column: 1 / -1;">
-              <label for="description">Additional Description (Optional)</label>
-              <textarea id="description" class="form-input" placeholder="Provide more context, usage examples, or related information"></textarea>
-          </div>
-      </div>
-      <div style="text-align: center;">
-          <button type="submit" class="submit-btn">Add Acronym</button>
-      </div>
-  </form>
-</div>
-
-<!--PDF Entry-->
-
-<div class="tab-content" id="pdf-tab">
-  <h2 style="text-align: center; margin-bottom: 20px;">Extract Acronyms from PDF</h2>
-  
-  <div class="upload-area" id="uploadArea">
-      <div class="upload-icon">📄</div>
-      <div class="upload-text">Drop PDF file here or click to browse</div>
-      <div class="upload-subtext">Supports PDF files up to 10MB</div>
-      <input type="file" id="pdfFileInput" class="file-input" accept=".pdf">
-  </div>
-
-  <div id="selectedFileInfo" class="selected-file" style="display: none;">
-      <div class="file-info">
-          <div class="file-icon">📄</div>
-          <div class="file-details">
-              <div class="file-name" id="fileName"></div>
-              <div class="file-size" id="fileSize"></div>
-          </div>
-      </div>
-      <button type="button" class="remove-file" id="removeFile">×</button>
-  </div>
-
-  <div class="extraction-options">
-    <h4>Extraction Options</h4>
-    <div class="option-group">
-        <div class="checkbox-group">
-            <input type="checkbox" id="extractDefinitions" checked>
-            <label for="extractDefinitions">Extract acronym definitions automatically</label>
+    <!--Manual Entry-->
+    
+  <div class="tab-content active" id="manual-tab">
+    <h2 style="text-align: center; margin-bottom: 20px;">Add New Acronym</h2>
+    <form id="addAcronymForm">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="acronym">Acronym *</label>
+                <input type="text" id="defineAcronym" class="form-input" required placeholder="e.g., API">
+            </div>
+            <div class="form-group">
+                <label for="definition">Definition *</label>
+                <input type="text" id="defineTerm" class="form-input" required placeholder="e.g., Application Programming Interface">
+            </div>
+            <div class="form-group">
+                <label for="tags_manual">Tags</label>
+                <select id="defineTags" class="form-input">
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
+                </select>
+            </div>
         </div>
-        <div class="checkbox-group">
-            <input type="checkbox" id="includeContext" checked>
-            <label for="includeContext">Include surrounding context</label>
+        <div class="form-row description-row">
+            <div class="form-group" style="grid-column: 1 / -1;">
+                <label for="description">Additional Description (Optional)</label>
+                <textarea id="defineDefinition" class="form-input" placeholder="Provide more context, usage examples, or related information"></textarea>
+            </div>
         </div>
-        <div class="checkbox-group">
-            <input type="checkbox" id="autoCategory">
-            <label for="autoCategory">Auto-categorize acronyms</label>
+        <div style="text-align: center;">
+            <button type="submit" class="submit-btn">Add Acronym</button>
         </div>
-    </div>
-    <div class="form-group">
-      <label for="tags_pdf">Tags</label>
-      <select id="tags_pdf" class="form-input">
-        <option value="A">A</option>
-        <option value="B">B</option>
-        <option value="C">C</option>
-      </select>
-    </div>
-
-    <div class="progress-container" id="progressContainer">
-      <div class="progress-bar" id="progressBar">0%</div>
-    </div>
-
-    <div style="text-align: center; margin-bottom: 20px;">
-      <button type="button" class="submit-btn" id="extractBtn" disabled>Extract Acronyms</button>
-    </div>
-
-    <div class="extracted-preview" id="extractedPreview">
-      <h4>Extracted Acronyms <span id="extractedCount">(0)</span></h4>
-      <div id="previewList"></div>
-      <div style="text-align: center; margin-top: 15px;">
-          <button type="button" class="submit-btn" id="addAllBtn">Add All to Database</button>
-      </div>
-    </div>
-</div>
-</div>
-</div>
-
-
-    <!--Search Bar-->
-    <div class="main">
-      <div class="search-box">
-        <input id="acronym" placeholder="Term">
-        <input id="tags" placeholder="Tags">
-        <button onclick="search()">Search</button>
-      </div>
-    <!--All Results w Tabs-->
-      <div id="results" class="results"></div>
-    </div>
-
-  <button id="settingsButton" onclick="toggleSettings()">⚙️</button>
-  <div id="settingsPanel" class="settings hidden">
-    <!-- Settings content goes here -->
-    <h2>Settings</h2>
-
-    <div style="display: flex; flex-direction: horizontal; text-align: center;">
-      <label style="text-align: center; margin-top: 20px; margin-right: 10px;">Manual Search</label>
-      <label class="switch">
-        <input type="checkbox" id="toggleAISearch" onchange="toggleAISearch(this)">
-        <span class="slider"></span>
-      </label>
-      <label  style="text-align: center; margin-top: 20px; margin-left: 10px;">AI Search</label>
-    </div>
+    </form>
   </div>
+</div>
+
+<!--Search Bar-->
+<div class="main">
+  <div class="search-box">
+    <input id="acronym" placeholder="Term">
+    <input id="tags" placeholder="Tags">
+    <button onclick="search()">Search</button>
+  </div>
+  <!--All Results w Tabs-->
+  <div id="results" class="results"></div>
+</div>
+
+<button id="settingsButton" onclick="toggleSettings()">⚙️</button>
+<div id="settingsPanel" class="settings hidden">
+  <!-- Settings content goes here -->
+  <h2>Settings</h2>
+
+  <div style="display: flex; flex-direction: horizontal; text-align: center;">
+    <label style="text-align: center; margin-top: 20px; margin-right: 10px;">Manual Search</label>
+    <label class="switch">
+      <input type="checkbox" id="toggleAISearch" onchange="toggleAISearch(this)">
+      <span class="slider"></span>
+    </label>
+    <label  style="text-align: center; margin-top: 20px; margin-left: 10px;">AI Search</label>
+  </div>
+</div>
 
 </body>
 

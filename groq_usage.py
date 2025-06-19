@@ -73,7 +73,7 @@ def get_search_response(query: str, tags: list) -> str:
     elif len(tags) == 1:
         tag_prompt = f'The tag associated with the search is: {tags[0]}'
     else:
-        tag_prompt = f'Here are the tags associated with the search: {', '.join(tags)}'
+        tag_prompt = f"Here are the tags associated with the search: {', '.join(tags)}"
     prompt_user = f"What does {query} stand for? {tag_prompt} Return **ONLY** valid JSON."
     print(f"Prompt to Groq: {prompt_user}")
     completion = client.chat.completions.create(

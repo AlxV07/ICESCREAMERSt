@@ -1,6 +1,8 @@
-import csv, ast
-import os
+import ast
+import csv
+
 from flask import Flask, render_template, request, jsonify
+
 import groq_usage
 
 app = Flask(__name__)

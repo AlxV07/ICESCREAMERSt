@@ -40,8 +40,8 @@ def respond_to_search_query():
     data = request.json
 
     acronym = data.get("acronym", "").upper()
-    tags = data.get("context", "").lower().split()
-
+    tags = data.get("tags", "").lower().split()
+    print(f"Searching for acronym: {acronym} with tags: {tags}")
     results = find_results(acronym, tags)
     return jsonify(results)
 
@@ -87,8 +87,15 @@ def find_results(target_acronym: str, tags: list) -> list:
             score += 10
         elif entry['acronym'].upper().startswith(target_acronym.upper()):
             score += 5
-        score += sum(keyword in entry["tags"] for keyword in tags)
-        results_sorted.append((entry, score))
+            
+            
+        score += sum(
+            keyword.strip().lower() in [tag.strip().lower() for tag in entry["tags"]]
+            for keyword in tags
+        )
+        
+        if score > 0:
+            results_sorted.append((entry, score))
 
     # Sort results by score
     results_sorted = sorted(results_sorted, key=lambda x: x[1], reverse=True)
@@ -128,4 +135,4 @@ def save_acronym(acronym: str, term: str, definition: str, tags: list, misc: lis
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0', port=5000)

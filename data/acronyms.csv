@@ -204,3 +204,5 @@
 "SEC","Securities and Exchange Commission","US federal agency regulating securities","['Finance','Legal']","['example.com','contact@gmail.com']"
 "SOX","Sarbanes-Oxley Act","US law regulating corporate accountability","['Finance','Legal']","['example.com','contact@gmail.com']"
 "PCAOB","Public Company Accounting Oversight Board","Organization overseeing audits","['Finance','Legal']","['example.com','contact@gmail.com']"
+"AQP","Auto Quote Purchase","State Farm's Java Springboot application for agents to file new auto quotes","['Auto','Policy','Quote']","['Team: Quote Busters','s.f/aqp']"
+"SIC","Service Integration Clients","Helps delegate classes communicate w/ remote SOAP and REST services.","['AWS', 'Migration']","['Creator: Tim Tye', 'Team: Quote Busters']

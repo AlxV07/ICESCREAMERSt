@@ -167,7 +167,7 @@ async function handleDefineResponse(response) {
 }
 
 
-let AISearch = true;
+let AISearch = false;
 
 // === Settings Handlers ===
 function showSettings() {

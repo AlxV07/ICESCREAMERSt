@@ -3,59 +3,54 @@ from groq import Groq
 import dotenv
 import os
 system_prompt_search = '''
-You are an LLM that processes search queries. If there are multiple matches, return all of the matches, sorted by which one is most applicable. The matches do not have to be perfect. Use the tags to determine relevance. 
-Return **ONLY** valid JSON. Return **ONLY** the content from the csv file provided. Do **NOT** include any other information or explanations. 
-You may use the tags to determine relevance, but do not use them to filter results.
-You may use your own judgement to determine relevance. Use semantic similarity and contextual relevance, not just exact keyword matching, to determine if an acronym relates to the query. Include variations or derivatives of the query term if they are closely related.
-If you find multiple matches, return all of them, sorted by relevance.
-If you do not find any matches, return an empty list in the "matches" field and set the "status" to "not_found".
-If you find matches, return them in the "matches" field and set the "status" to "found".
-The matches do not have to be perfect, but they should be relevant to the search query. Case, plurality, subtypes, and other variations are acceptable.
-Variations in spelling, hyphenation, prefix/suffix usage, and abbreviations are acceptable. For example, you should consider conceptually related terms, such as different formats, technologies, or scopes of a core idea.
-The CSV file contains acronyms, terms, definitions, tags, and miscellaneous information.
+You are an LLM that processes search queries and finds matching acronyms from a CSV database. 
 
-The JSON should have the following structure:
+IMPORTANT INPUT FLEXIBILITY:
+- Accept ANY type of input query - single words, phrases, partial matches, related concepts, or variations
+- Match queries against ALL fields: Acronym, Term, Definition, and Tags
+- Use broad semantic matching - if the query relates to ANY part of an entry, include it
+- Consider word fragments, root words, and conceptual relationships (e.g., "commerce" should match "E-commerce", "M-commerce")
+- Match abbreviations, full terms, and conceptual relationships
+- Case insensitive matching
+- Handle plurals, prefixes, suffixes, and word variations
+- Include results where the query appears as part of compound words or hyphenated terms
+
+MATCHING EXAMPLES:
+- "commerce" should match "E-commerce", "M-commerce", "Electronic Commerce", "Mobile Commerce"  
+- "learning" should match "ML" (Machine Learning), "LMS" (Learning Management System)
+- "security" should match "SSL", "TLS", "2FA", "VPN", etc.
+- "data" should match "DB", "Database", "Big Data", "Data Mining", etc.
+
+RELEVANCE SCORING:
+- Exact acronym match: 1.0
+- Exact term match: 0.9
+- Partial term match: 0.8
+- Definition match: 0.7  
+- Tag match: 0.6
+- Semantic/conceptual match: 0.5
+
+STRICT OUTPUT REQUIREMENTS:
+Return **ONLY** valid JSON with this exact structure:
 {
   "status": "found" | "not_found",
   "matches": [
     {
       "Acronym": "string",
-      "Term": "string",
+      "Term": "string", 
       "Definition": "string",
       "Tags": ["string", ...],
       "Misc": ["string", ...],
       "relevance": float
-    },
-    ...
-  ]
-}
-Here is an example. However, do not use this example as a template, as the data in the csv file is different and you should use that data instead.
-Input: "QSR"
-Output:
-{
-  "status": "found",
-  "matches": [
-    {
-      "Acronym": "QSR",
-      "Term": "Quick Service Restaurant",
-      "Definition": "A type of restaurant that offers fast food cuisine and minimal table service",
-      "Tags": ["Fast Food", "Hospitality"],
-      "Misc": ["qsrmagazine.com", "info@fastdine.net"],
-      "relevance": 0.95
-    },
-    {
-      "Acronym": "QSR",
-      "Term": "Quarterly Sales Report",
-      "Definition": "A financial summary of a restaurant's performance over a fiscal quarter",
-      "Tags": ["Finance", "Restaurant Management"],
-      "Misc": ["salesdatahub.org", "finance@chaincorp.com"],
-      "relevance": 0.05
     }
   ]
 }
-Return **ONLY** valid JSON.
-The matches do not have to be perfect. Case, plurality, spelling, abbreviations, word variations (including prefixes, suffixes, and hyphenations), and semantically related terms are acceptable. Use the tags and your own judgment to assess relevance, but do not use tags to filter results.
-Do not provide more than 5 matches, and do not return more than 5 matches in the "matches" field.
+
+- Maximum 5 matches
+- Sort by relevance score (highest first)
+- If no matches found, return empty "matches" array and "not_found" status
+- Tags and Misc fields should be parsed as arrays from the CSV format
+- Use only data from the provided CSV file
+- No explanations, comments, or additional text - JSON only
 '''
 
 

@@ -58,9 +58,3 @@ def get_search_response(query: str, tags: list) -> str:
         stop=None,
     )
     return completion.choices[0].message.content
-
-def write_csv_line(acronym: str, term: str, definition: str, tags: list, misc: list, filename: str = 'data/acronyms.csv'):
-    import csv
-    with open(filename, 'a', newline='', encoding='utf-8') as csvfile:
-        writer = csv.writer(csvfile)
-        writer.writerow([acronym, term, definition, tags, misc])

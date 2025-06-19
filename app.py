@@ -87,16 +87,17 @@ def find_results(target_acronym: str, tags: list) -> list:
             score += 10
         elif entry['acronym'].upper() in target_acronym.upper() or target_acronym.upper() in entry['acronym'].upper():
             score += 5
-            
-            
-        score += sum(
-            keyword.strip().lower() in [tag.strip().lower() for tag in entry["tags"]]
-            for keyword in tags
-        )
-    
-    
-        if score > 0:
-            results_sorted.append((entry, score))
+
+
+        tag_score = sum(keyword.strip().lower() in [tag.strip().lower() for tag in entry["tags"]] for keyword in tags)
+        score += tag_score
+
+        if len(tags) > 0:
+            if tag_score > 0:
+                results_sorted.append((entry, score))
+        else:
+            if score > 0:
+                results_sorted.append((entry, score))
 
     # Sort results by score
     results_sorted = sorted(results_sorted, key=lambda x: x[1], reverse=True)

@@ -26,8 +26,6 @@ Here is an example. Choose one of the status codes to output.
 }
 
 '''
-
-
 def get_api_key():
     # Replace with your actual method of retrieving the API key
     return "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"

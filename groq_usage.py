@@ -1,67 +1,82 @@
+import os
+
+import dotenv
 from groq import Groq
+
 system_prompt_search = '''
-You are a llm that processes search queries. If there are multiple matches, return all of the matches, sorted by which one you think is most applicable using the tags. 
-Return **ONLY** valid JSON. Return **ONLY** the content from the csv file provided. Do **NOT** include any other information or explanations. 
-If you cannot find any matches, return an empty list for "matches" and set "status" to "not_found". If you find matches, set "status" to "found".
-If the acronym provided is a prefix of one found in the csv, return the full acronym found in the csv, with all of its data.
-For example, if the user searches for "QSR", and the csv contains "QSR" and "QSRP", return both full "QSR" entry and the "QSRP" entry, but the "QSRP" entry should have a lower relevance score.
-The JSON should have the following structure:
+You are an LLM that processes search queries and finds matching acronyms from a CSV database. 
+
+IMPORTANT INPUT FLEXIBILITY:
+- Accept ANY type of input query - single words, phrases, partial matches, related concepts, or variations
+- Match queries against ALL fields: Acronym, Term, Definition, and Tags
+- Use broad semantic matching - if the query relates to ANY part of an entry, include it
+- Consider word fragments, root words, and conceptual relationships (e.g., "commerce" should match "E-commerce", "M-commerce")
+- Match abbreviations, full terms, and conceptual relationships
+- Case insensitive matching
+- Handle plurals, prefixes, suffixes, and word variations
+- Include results where the query appears as part of compound words or hyphenated terms
+
+MATCHING EXAMPLES:
+- "commerce" should match "E-commerce", "M-commerce", "Electronic Commerce", "Mobile Commerce"  
+- "learning" should match "ML" (Machine Learning), "LMS" (Learning Management System)
+- "security" should match "SSL", "TLS", "2FA", "VPN", etc.
+- "data" should match "DB", "Database", "Big Data", "Data Mining", etc.
+
+RELEVANCE SCORING:
+- Exact acronym match: 1.0
+- Exact term match: 0.9
+- Partial term match: 0.8
+- Definition match: 0.7  
+- Tag match: 0.6
+- Semantic/conceptual match: 0.5
+
+STRICT OUTPUT REQUIREMENTS:
+Return **ONLY** valid JSON with this exact structure:
 {
   "status": "found" | "not_found",
   "matches": [
     {
       "Acronym": "string",
-      "Term": "string",
+      "Term": "string", 
       "Definition": "string",
       "Tags": ["string", ...],
       "Misc": ["string", ...],
       "relevance": float
-    },
-    ...
-  ]
-}
-Here is an example. 
-{
-  "status": "found",
-  "matches": [
-    {
-      "Acronym": "QSR",
-      "Term": "Quick Service Restaurant",
-      "Definition": "A type of restaurant that offers fast food cuisine and minimal table service",
-      "Tags": ["Fast Food", "Hospitality"],
-      "Misc": ["qsrmagazine.com", "info@fastdine.net"],
-      "relevance": 0.95
-    },
-    {
-      "Acronym": "QSR",
-      "Term": "Quarterly Sales Report",
-      "Definition": "A financial summary of a restaurant's performance over a fiscal quarter",
-      "Tags": ["Finance", "Restaurant Management"],
-      "Misc": ["salesdatahub.org", "finance@chaincorp.com"],
-      "relevance": 0.05
     }
   ]
 }
 
+- Maximum 5 matches
+- Sort by relevance score (highest first)
+- If no matches found, return empty "matches" array and "not_found" status
+- Tags and Misc fields should be parsed as arrays from the CSV format
+- Use only data from the provided CSV file
+- No explanations, comments, or additional text - JSON only
 '''
+
 
 def get_api_key():
     # Replace with your actual method of retrieving the API key
-    return "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"
+    dotenv.load_dotenv()
+    api_key = os.getenv('GROQ_API_KEY')
+    return api_key
 def get_csv_data():
     return open('data/acronyms.csv', 'r').read()
+
+
 client = Groq(api_key=get_api_key())
+
 
 def get_search_response(query: str, tags: list) -> str:
     global system_prompt_search
-    csv_data= get_csv_data()
+    csv_data = get_csv_data()
     if len(tags) == 0:
-      tag_prompt = "No tags were provided."
+        tag_prompt = "No tags were provided."
     elif len(tags) == 1:
-      tag_prompt = f'The tag associated with the search is: {tags[0]}'
+        tag_prompt = f'The tag associated with the search is: {tags[0]}'
     else:
-      tag_prompt=f'Here are the tags associated with the search: {', '.join(tags)}'
-    prompt_user=f"what does {query} stand for? {tag_prompt}"
+        tag_prompt = f"Here are the tags associated with the search: {', '.join(tags)}"
+    prompt_user = f"What does {query} stand for? {tag_prompt}. Return **ONLY** valid JSON."
     print(f"Prompt to Groq: {prompt_user}")
     completion = client.chat.completions.create(
         model="meta-llama/llama-4-scout-17b-16e-instruct",
@@ -76,10 +91,43 @@ def get_search_response(query: str, tags: list) -> str:
         }
         ],
         temperature=0.0,
-        max_completion_tokens=2048,
+        max_completion_tokens=4096,
         top_p=0.9,
         stream=False,
         response_format={"type": "json_object"},
         stop=None,
     )
     return completion.choices[0].message.content
+
+def validate_result(result: dict, data: list) -> dict:
+    validated_matches = []
+    matches = result['matches']
+    for match in matches:
+        groqAcronym = match['Acronym']
+        groqTerm = match['Term']
+        groqDefinition = match['Definition']
+        groqTags = match['Tags']
+        groqMisc = match['Misc']
+        matchVerified = False
+
+        for dataRow in data:
+            acronym = dataRow['acronym']
+            term = dataRow['term']
+            definition = dataRow['definition']
+            tags = dataRow['tags']
+            misc = dataRow['misc']
+            if (
+                groqAcronym == acronym
+                and groqTerm == term
+                and groqDefinition == definition
+                and groqTags == tags
+                and groqMisc == misc
+            ):
+                matchVerified = True
+                break
+
+        if matchVerified: validated_matches.append(match)
+
+    result['matches'] = validated_matches
+
+    return result

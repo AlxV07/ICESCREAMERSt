@@ -40,10 +40,10 @@ def respond_to_search_query():
     data = request.json
 
     acronym = data.get("acronym", "").upper()
-    tags = data.get("context", "").lower().split()
-
+    tags = data.get("tags", "").lower().split()
     results = find_results(acronym, tags)
     return jsonify(results)
+
 
 @app.route("/search_groq", methods=["POST"])
 def respond_to_search_groq_query():
@@ -52,16 +52,23 @@ def respond_to_search_groq_query():
     :return: json-formatted response to send to frontend
     """
     data = request.json
+    acronyms = load_acronyms()
 
     acronym = data.get("acronym", "").upper()
     tags = data.get("tags", "").lower().split()
     print(tags)
-
-    results = ast.literal_eval(groq_usage.get_search_response(acronym, tags))
-    print(f"Results from Groq: {results}")
-    if not results:
-        return jsonify({"error": "No results found"}), 404
-    return jsonify(results)
+    string_result = groq_usage.get_search_response(acronym, tags)
+    try:
+        results = ast.literal_eval(string_result)
+        print(f"Results from Groq: {results}")
+        if not results:
+            return jsonify({"error": "No results found"}), 404
+        results = groq_usage.validate_result(results, acronyms)
+        return jsonify(results)
+    except Exception as e:
+        print(f"Error parsing Groq response: {e}")
+        print(string_result)
+        return jsonify({"error": "Failed to parse Groq response"}), 500
 
 
 def find_results(target_acronym: str, tags: list) -> list:
@@ -77,13 +84,23 @@ def find_results(target_acronym: str, tags: list) -> list:
         score = 0
         if entry['acronym'].upper() == target_acronym.upper():
             score += 10
-        
-        score += sum(keyword in entry["tags"] for keyword in tags)
-        results_sorted.append((entry, score))
+        elif entry['acronym'].upper().startswith(target_acronym.upper()):
+            score += 5
+        elif entry['acronym'].upper() in target_acronym.upper() or target_acronym.upper() in entry['acronym'].upper():
+            score += 3
 
-    # Sort results by score
+
+        tag_score = sum(keyword.strip().lower() in [tag.strip().lower() for tag in entry["tags"]] for keyword in tags)
+        score += tag_score
+
+        if len(tags) > 0:
+            if tag_score > 0:
+                results_sorted.append((entry, score))
+        else:
+            if score > 0:
+                results_sorted.append((entry, score))
+
     results_sorted = sorted(results_sorted, key=lambda x: x[1], reverse=True)
-    print(results_sorted)
     return [entry for entry, score in results_sorted]
 
 
@@ -106,6 +123,14 @@ def define_acronym():
 
 
 def save_acronym(acronym: str, term: str, definition: str, tags: list, misc: list) -> dict:
+    '''
+    :param acronym: acronym to save
+    :param term: term associated with the acronym
+    :param definition: definition of the acronym
+    :param tags: list of tags associated with the acronym
+    :param misc: list of miscellaneous information associated with the acronym
+    :return: status of the save operation
+    '''
     try:
         with open(CSV_FILE, 'a', newline='', encoding='utf-8') as f:
             writer = csv.writer(f)
@@ -117,6 +142,27 @@ def save_acronym(acronym: str, term: str, definition: str, tags: list, misc: lis
         info = str(e)
     return {"status": "success" if success else "error", "info": info}
 
+def find_all_tags() -> list:
+    """
+    :return: list of all tags in the database
+    """
+    acronyms = load_acronyms()
+    tags = set()
+    for entry in acronyms:
+        for tag in entry['tags']:
+            tags.add(tag.strip().lower())
+    return sorted(list(tags))
+
+@app.route("/tags", methods=["POST"])
+def find_all_tags_endpoint() -> list:
+    """
+    :return: list of all tags in the database that start with the given prefix
+    """
+    data = request.json
+    prefix = data.get("payload", "").lower()
+    tags = find_all_tags()
+    filtered_tags = [tag for tag in tags if tag.startswith(prefix)]
+    return jsonify(filtered_tags)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)

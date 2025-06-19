@@ -4,7 +4,10 @@
   "version": "1.0",
   "description": "The all-functional abbreviation tool!",
   "permissions": ["scripting", "activeTab"],
-  "host_permissions": ["http://localhost:8000/*"], 
+  "host_permissions": [
+    "http://localhost:5000/*",
+    "http://127.0.0.1:5000/*"
+  ],
   "action": {
       "default_popup": "popup.html",
       "default_icon": {
@@ -17,5 +20,8 @@
       "16": "ice_cream.png",
       "48": "ice_cream.png",
       "128": "ice_cream.png"
-  }   
+  },
+   "background": {
+    "service_worker": "background.js"
+  }
 }

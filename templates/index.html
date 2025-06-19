@@ -17,34 +17,87 @@
   <div class="header">
       <h1>The Most Future-Proof, Long-Range, and Inspiring Database</h1>
       <p>Discover, learn, and contribute acronym definitions</p>
-</div>
-    <!--Tab Section-->
-    <div class="container">
-      <div class="tab-container">
-        <div class="tab-nav">
-          <button class="tab-button active" data-tab="manual">Manual Entry</button>
-          <button class="tab-button" data-tab="pdf">PDF Upload</button>
-        </div>
-
-      <div class="container">
-        <div class="tab-container-manual">
-          <h1>Manual Entry</h1>
-        </div>
-      </div>
     </div>
-    <!--PDF Entry-->
-    <!--Search Bar-->
-    <div class="main">
-      <div class="search-box">
-        <input id="acronym" placeholder="Term">
-        <input id="tags" placeholder="Tags">
-        <button onclick="groqSearch()">Search</button>
+
+
+<!--Tab Section-->
+<div class="container">
+
+    <!--Manual Entry-->
+    
+  <div class="tab-content active" id="manual-tab">
+    <h2 style="text-align: center; margin-bottom: 20px;">Add New Acronym</h2>
+    <form id="addAcronymForm">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="acronym">Acronym *</label>
+                <input type="text" id="defineAcronym" class="form-input" required placeholder="e.g., API">
+            </div>
+            <div class="form-group">
+                <label for="definition">Definition *</label>
+                <input type="text" id="defineTerm" class="form-input" required placeholder="e.g., Application Programming Interface">
+            </div>
+            <div class="form-group">
+                <label for="tags_manual">Tags</label>
+                <select id="defineTags" class="form-input">
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-row description-row">
+            <div class="form-group" style="grid-column: 1 / -1;">
+                <label for="description">Additional Description (Optional)</label>
+                <textarea id="defineDefinition" class="form-input" placeholder="Provide more context, usage examples, or related information"></textarea>
+            </div>
+        </div>
+        <div style="text-align: center;">
+            <button type="submit" class="submit-btn">Add Acronym</button>
+        </div>
+    </form>
+  </div>
+</div>
+
+<!--Search Bar-->
+<div class="main">
+  <div class="search-box">
+    <input id="acronym" placeholder="Term">
+    <input id="tags" placeholder="Tags">
+    <button onclick="search()">Search</button>
+  </div>
+  <!--All Results w Tabs-->
+  <div id="results" class="results"></div>
+</div>
+
+<button id="settingsButton" onclick="toggleSettings()">⚙️</button>
+<div id="settingsPanel" class="settings hidden">
+  <!-- Settings content goes here -->
+  <h2>Settings</h2>
+
+    <div style="display: flex; flex-direction: horizontal; text-align: center;">
+      <label style="text-align: center; margin-top: 20px; margin-right: 10px;">Manual Search</label>
+      <label class="switch">
+        <input type="checkbox" id="toggleAISearch" onchange="toggleAISearch(this)">
+        <span class="slider"></span>
+      </label>
+      <label  style="text-align: center; margin-top: 20px; margin-left: 10px;">AI Search</label>
+    </div>
+
+    <div>
+      <div class="grid">
+        <div style="font-weight: bold" class="cell">Manual Search</div>
+        <div style="font-weight: bold" class="cell">AI Search</div>
+        <div class="cell">- Instantaneous Search Speed</div>
+        <div class="cell">- Slightly Slower Search Load Speed</div>
+        <div class="cell">- Rigid Prefix & Realtime Search (e.g. search "AW", matches "AWS" while typing)</div>
+        <div class="cell">- Flexible, Context-Based Search (powered by LLM scanning)</div>
+        <div class="cell">- Tags provide strict term filtering by tag</div>
+        <div class="cell">- Tags provide general contextual information</div>
       </div>
-    <!--All Results w Tabs-->
-      <div id="results" class="results"></div>
     </div>
   </div>
+
 </body>
 
 </html>
-

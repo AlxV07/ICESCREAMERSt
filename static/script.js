@@ -1,25 +1,86 @@
-//  === Endpoint Connection Methods ===
+let currentFilter = "all";
+let allResults = [];
+let filteredResults = [];
+
+const acronymInput = document.getElementById("acronym");
+const tagInput = document.getElementById("tags");
+
+function setupEventListeners() {
+  // Tab switching
+  document.querySelectorAll(".tab-button").forEach((button) => {
+    button.addEventListener("click", function () {
+      switchTab(this.getAttribute("data-tab"));
+    });
+  });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  setupEventListeners();
+  const tabButtons = document.querySelectorAll(".tab-button");
+  const tabContents = document.querySelectorAll(".tab-content");
+
+  tabButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      // Remove active class from all buttons
+      tabButtons.forEach((b) => b.classList.remove("active"));
+      // Add active class to clicked button
+      btn.classList.add("active");
+
+      // Hide all tab contents
+      tabContents.forEach((content) => content.classList.remove("active"));
+
+      // Show the selected tab content
+      const target = btn.getAttribute("data-tab") + "-tab";
+      document.getElementById(target).classList.add("active");
+    });
+  });
+});
 
 function addListeners() {
-    document.getElementById("acronym").addEventListener("keydown", (e) => {
-        if (e.code === 'Enter') {
-//            manualSearch();
-            groqSearch();
+    acronymInput.addEventListener("input", (e) => {
+        if (!AISearch) {  // real time update
+            search();
         }
-    })
+    });
+    acronymInput.addEventListener("keydown", (e) => {
+        if (e.code === 'Enter') {
+            search();
+        }
+    });
+    tagInput.addEventListener("keydown", (e) => {
+        if (e.code === 'Enter') {
+            search();
+        }
+    });
 }
 addListeners();
+
+
+async function search() {
+    if (AISearch) {
+        groqSearch();
+    } else {
+        manualSearch();
+    }
+}
 
 async function groqSearch() {
   /*
   Called by search button (if AI-search is enabled TODO-implement toggle); sends search query to server, expects response in established search-query-response data format.
   */
-  const acronym = document.getElementById("acronym").value;
+  const acronym = acronymInput.value;
   const tags = document.getElementById("tags").value;
+<<<<<<< HEAD
   document.getElementById("results").innerHTML = `<iframe style="width:fit-content;height:fit-content" src="https://www.icegif.com/wp-content/uploads/2023/07/icegif-1268.gif"></iframe>Loading...`
   const gif = document.getElementbyId("results");
   gif.style.width = "100%";
   gif.style.height = "auto";
+=======
+  document.getElementById("results").innerHTML = `<iframe id="gif" style="width:fit-content;height:fit-content" src="https://www.icegif.com/wp-content/uploads/2023/07/icegif-1268.gif"></iframe>Loading...`
+  const gif = document.getElementById("gif")
+  gif.style.width = "600px"
+  gif.style.height = "400px"
+>>>>>>> 7fc15c5f475406fa62c2bab069038b6c6cb3f72b
 
   const response = await fetch("/search_groq", {
     method: "POST",
@@ -27,7 +88,6 @@ async function groqSearch() {
     body: JSON.stringify({ acronym, tags })
   });
   const results = await response.json();
-  console.log(results);
   await handleGroqSearchResponse(results);
 }
 
@@ -35,7 +95,7 @@ async function manualSearch() {
   /*
   Called by search button; sends search query to server, expects response in established search-query-response data format.
   */
-  const acronym = document.getElementById("acronym").value;
+  const acronym = acronymInput.value;
   const tags = document.getElementById("tags").value;
 
   const response = await fetch("/search", {
@@ -44,7 +104,6 @@ async function manualSearch() {
     body: JSON.stringify({ acronym, tags })
   });
   const results = await response.json();
-  console.log(results);
   await handleManualSearchResponse(results);
 }
 
@@ -54,7 +113,7 @@ async function define() {
   const term = document.getElementById("defineTerm").value;
   const definition = document.getElementById("defineDefinition").value;
   const tags = document.getElementById("defineTags").value;
-  const misc = document.getElementById("defineMisc").value;
+  const misc = document.getElementById("defineMisc").value; // TODO: Need to add an id="defineMisc" element to index.html
 
   const response = await fetch("/define", {
     method: "POST",
@@ -62,10 +121,8 @@ async function define() {
     body: JSON.stringify({ acronym, term, definition, tags, misc })
   });
   const results = await response.json();
-  console.log(results);
   await handleDefineResponse(results);
 }
-
 
 // === Frontend Util Methods ===
 
@@ -117,7 +174,6 @@ async function handleManualSearchResponse(response) {
   */
 
   const resultsDiv = document.getElementById("results");
-  console.log(response);
   final_html = "";
   for (const a of response) {
     final_html += generateHTMLFromTerm(a);
@@ -135,14 +191,37 @@ async function handleGroqSearchResponse(response) {
   response: search-query-response in established data format
   */
   const resultsDiv = document.getElementById("results");
-  console.log(response);
   final_html = "";
   for (const a of response.matches) {
     final_html += generateHTMLFromTerm(a, true);
   }
+  if (final_html === "") {
+    final_html = "No terms found using AI Search. Try using manual search in Settings."
+  }
   resultsDiv.innerHTML = final_html;
 }
 
-async function handleDefineResponse(response) {
-  // TODO: Implement
+
+let AISearch = false;
+
+// === Settings Handlers ===
+function showSettings() {
+  document.getElementById("settingsPanel").classList.add("visible");
+}
+
+function hideSettings() {
+  document.getElementById("settingsPanel").classList.remove("visible");
+}
+
+function toggleSettings() {
+  const panel = document.getElementById("settingsPanel");
+  panel.classList.toggle("visible");
+}
+
+function toggleAISearch(checkbox) {
+  if (checkbox.checked) {
+    AISearch = true;
+  } else {
+    AISearch = false;
+  }
 }

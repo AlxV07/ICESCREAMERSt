@@ -1,11 +1,19 @@
-import csv
-
+import csv, ast
+import os
 from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
 CSV_FILE = "data/acronyms.csv"
 
+def parse_line(raw_acronym):
+    short=raw_acronym['Acronym']
+    term=raw_acronym['Term']
+    definition = raw_acronym['Definition']
+    tags=ast.literal_eval(raw_acronym['Tags'])
+    misc=ast.literal_eval(raw_acronym['Misc'])
+    new_acronym = {"acronym":short, "term":term, "defintion":definition, "tags":tags, 'misc':misc}
+    return new_acronym
 
 @app.route("/")
 def index():
@@ -13,18 +21,11 @@ def index():
 
 
 def load_acronyms():
-    # TODO: Skanda replace below w/ your parsing method
     acronyms = []
     with open(CSV_FILE, 'r', encoding='utf-8') as f:
         reader = csv.DictReader(f)
         for row in reader:
-            acronyms.append({
-                'acronym': row['Acronym'].upper(),
-                'term': row['Term'],
-                'definition': row['Definition'],
-                'tags': row['Tags'].lower().split(),
-                'misc': row['Misc'].lower().split()
-            })
+            acronyms.append(parse_line(row))
     return acronyms
 
 
@@ -40,6 +41,7 @@ def respond_to_search_query():
     tags = data.get("tags", "").lower().split()
 
     results = find_results(acronym, tags)
+    print(results, type(results))
     return jsonify(results)
 
 

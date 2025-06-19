@@ -24,7 +24,10 @@ async function groqSearch() {
   */
   const acronym = document.getElementById("acronym").value;
   const tags = document.getElementById("tags").value;
-  document.getElementById("results").innerHTML = `<iframe style="width:fit-content;height:fit-content" src="https://www.icegif.com/wp-content/uploads/2023/07/icegif-1268.gif"></iframe>Loading...`
+  document.getElementById("results").innerHTML = `<iframe id="gif" style="width:fit-content;height:fit-content" src="https://www.icegif.com/wp-content/uploads/2023/07/icegif-1268.gif"></iframe>Loading...`
+  const gif = document.getElementById("gif")
+  gif.style.width = "600px"
+  gif.style.height = "400px"
 
   const response = await fetch("/search_groq", {
     method: "POST",

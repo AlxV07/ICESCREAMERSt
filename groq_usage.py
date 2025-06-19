@@ -1,4 +1,5 @@
 from groq import Groq
+
 import dotenv
 import os
 system_prompt_search = '''
@@ -51,6 +52,7 @@ Output:
 Return **ONLY** valid JSON.
 '''
 
+
 def get_api_key():
     # Replace with your actual method of retrieving the API key
     dotenv.load_dotenv()
@@ -58,18 +60,21 @@ def get_api_key():
     return api_key
 def get_csv_data():
     return open('data/acronyms.csv', 'r').read()
+
+
 client = Groq(api_key=get_api_key())
+
 
 def get_search_response(query: str, tags: list) -> str:
     global system_prompt_search
-    csv_data= get_csv_data()
+    csv_data = get_csv_data()
     if len(tags) == 0:
-      tag_prompt = "No tags were provided."
+        tag_prompt = "No tags were provided."
     elif len(tags) == 1:
-      tag_prompt = f'The tag associated with the search is: {tags[0]}'
+        tag_prompt = f'The tag associated with the search is: {tags[0]}'
     else:
-      tag_prompt=f'Here are the tags associated with the search: {', '.join(tags)}'
-    prompt_user=f"What does {query} stand for? {tag_prompt} Return **ONLY** valid JSON."
+        tag_prompt = f'Here are the tags associated with the search: {", ".join(tags)}'
+    prompt_user=f"What does {query} stand for? {tag_prompt}"
     print(f"Prompt to Groq: {prompt_user}")
     completion = client.chat.completions.create(
         model="meta-llama/llama-4-scout-17b-16e-instruct",
@@ -91,3 +96,36 @@ def get_search_response(query: str, tags: list) -> str:
         stop=None,
     )
     return completion.choices[0].message.content
+
+def validate_result(result: dict, data: list) -> dict:
+    validated_matches = []
+    matches = result['matches']
+    for match in matches:
+        groqAcronym = match['Acronym']
+        groqTerm = match['Term']
+        groqDefinition = match['Definition']
+        groqTags = match['Tags']
+        groqMisc = match['Misc']
+        matchVerified = False
+
+        for dataRow in data:
+            acronym = dataRow['acronym']
+            term = dataRow['term']
+            definition = dataRow['definition']
+            tags = dataRow['tags']
+            misc = dataRow['misc']
+            if (
+                groqAcronym == acronym
+                and groqTerm == term
+                and groqDefinition == definition
+                and groqTags == tags
+                and groqMisc == misc
+            ):
+                matchVerified = True
+                break
+
+        if matchVerified: validated_matches.append(match)
+
+    result['matches'] = validated_matches
+
+    return result

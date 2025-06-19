@@ -31,7 +31,7 @@ unfamiliar terms mean.
 ## Setup for Devs
 
 1. Clone project
-2. In project directory: `pip install requirements.txt`
+2. In project directory: `pip install -r requirements.txt`
 3. And then configure AWS (install aws-cli if needed): `aws configure` (will prompt for your credentials, talk to Alex if this setup needed)
 4. Open project directory in editor, and you're good to go!
 

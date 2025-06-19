@@ -38,12 +38,28 @@
       <div class="search-box">
         <input id="acronym" placeholder="Term">
         <input id="tags" placeholder="Tags">
-        <button onclick="groqSearch()">Search</button>
+        <button onclick="search()">Search</button>
       </div>
     <!--All Results w Tabs-->
       <div id="results" class="results"></div>
     </div>
   </div>
+
+  <button id="settingsButton" onclick="toggleSettings()">⚙️</button>
+  <div id="settingsPanel" class="settings hidden">
+    <!-- Settings content goes here -->
+    <h2>Settings</h2>
+
+    <div style="display: flex; flex-direction: horizontal; text-align: center;">
+      <label style="text-align: center; margin-top: 20px; margin-right: 10px;">Manual Search</label>
+      <label class="switch">
+        <input type="checkbox" id="toggleAISearch" onchange="toggleAISearch(this)" checked="checked">
+        <span class="slider"></span>
+      </label>
+      <label  style="text-align: center; margin-top: 20px; margin-left: 10px;">AI Search</label>
+    </div>
+  </div>
+
 </body>
 
 </html>

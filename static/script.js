@@ -3,12 +3,20 @@
 function addListeners() {
     document.getElementById("acronym").addEventListener("keydown", (e) => {
         if (e.code === 'Enter') {
-//            manualSearch();
-            groqSearch();
+            search();
         }
     })
 }
 addListeners();
+
+
+async function search() {
+    if (AISearch) {
+        groqSearch();
+    } else {
+        manualSearch();
+    }
+}
 
 async function groqSearch() {
   /*
@@ -137,9 +145,37 @@ async function handleGroqSearchResponse(response) {
   for (const a of response.matches) {
     final_html += generateHTMLFromTerm(a, true);
   }
+  if (final_html === "") {
+    final_html = "No terms found using AI Search. Try using manual search in Settings."
+  }
   resultsDiv.innerHTML = final_html;
 }
 
 async function handleDefineResponse(response) {
   // TODO: Implement
+}
+
+
+let AISearch = true;
+
+// === Settings Handlers ===
+function showSettings() {
+  document.getElementById("settingsPanel").classList.add("visible");
+}
+
+function hideSettings() {
+  document.getElementById("settingsPanel").classList.remove("visible");
+}
+
+function toggleSettings() {
+  const panel = document.getElementById("settingsPanel");
+  panel.classList.toggle("visible");
+}
+
+function toggleAISearch(checkbox) {
+  if (checkbox.checked) {
+    AISearch = true;
+  } else {
+    AISearch = false;
+  }
 }

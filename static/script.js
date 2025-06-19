@@ -3,27 +3,45 @@
 function addListeners() {
     document.getElementById("acronym").addEventListener("keydown", (e) => {
         if (e.code === 'Enter') {
-            search();
+//            manualSearch();
+            groqSearch();
         }
     })
 }
 addListeners();
 
-async function search() {
+async function groqSearch() {
   /*
-  Called by search button; sends search query to server, expects response in established search-query-response data format.
+  Called by search button (if AI-search is enabled TODO-implement toggle); sends search query to server, expects response in established search-query-response data format.
   */
   const acronym = document.getElementById("acronym").value;
-  const context = document.getElementById("tags").value;
+  const tags = document.getElementById("tags").value;
 
   const response = await fetch("/search_groq", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ acronym, context })
+    body: JSON.stringify({ acronym, tags })
   });
   const results = await response.json();
   console.log(results);
-  await handleSearchResponse(results);
+  await handleGroqSearchResponse(results);
+}
+
+async function manualSearch() {
+  /*
+  Called by search button; sends search query to server, expects response in established search-query-response data format.
+  */
+  const acronym = document.getElementById("acronym").value;
+  const tags = document.getElementById("tags").value;
+
+  const response = await fetch("/search", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ acronym, tags })
+  });
+  const results = await response.json();
+  console.log(results);
+  await handleManualSearchResponse(results);
 }
 
 
@@ -47,14 +65,20 @@ async function define() {
 
 // === Frontend Util Methods ===
 
-function generateHTMLFromTerm(term_data) {
-    acronym = term_data.acronym;
-    term = term_data.term;
-    def = term_data.definition;
-    tags = term_data.tags;  // lists
-    misc = term_data.misc;
-
-    console.log(tags)
+function generateHTMLFromTerm(term_data, isAI) {
+    if (!isAI) {
+        acronym = term_data.acronym;
+        term = term_data.term;
+        def = term_data.definition;
+        tags = term_data.tags;  // list
+        misc = term_data.misc;
+    } else {
+        acronym = term_data.Acronym;
+        term = term_data.Term;
+        def = term_data.Definition;
+        tags = term_data.Tags;  // list
+        misc = term_data.Misc;
+    }
 
     tag_html = ''
     tags.forEach(tag => {
@@ -82,8 +106,7 @@ function generateHTMLFromTerm(term_data) {
     `
 }
 
-
-async function handleSearchResponse(response) {
+async function handleManualSearchResponse(response) {
   /*
   Handles search-query-response from endpoint
   response: search-query-response in established data format
@@ -94,6 +117,24 @@ async function handleSearchResponse(response) {
   final_html = "";
   for (const a of response) {
     final_html += generateHTMLFromTerm(a);
+  }
+  resultsDiv.innerHTML = final_html;
+}
+
+async function handleDefineResponse(response) {
+  // TODO: Implement
+}
+
+async function handleGroqSearchResponse(response) {
+  /*
+  Handles ai-search-query-response from endpoint
+  response: search-query-response in established data format
+  */
+  const resultsDiv = document.getElementById("results");
+  console.log(response);
+  final_html = "";
+  for (const a of response.matches) {
+    final_html += generateHTMLFromTerm(a, true);
   }
   resultsDiv.innerHTML = final_html;
 }

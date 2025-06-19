@@ -54,7 +54,8 @@ def respond_to_search_groq_query():
     data = request.json
 
     acronym = data.get("acronym", "").upper()
-    tags = data.get("context", "").lower().split()
+    tags = data.get("tags", "").lower().split()
+    print(tags)
 
     results = ast.literal_eval(groq_usage.get_search_response(acronym, tags))
     print(f"Results from Groq: {results}")

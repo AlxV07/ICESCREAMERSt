@@ -1,6 +1,7 @@
 import csv, ast
 import os
 from flask import Flask, render_template, request, jsonify
+import groq_usage
 
 app = Flask(__name__)
 
@@ -41,6 +42,22 @@ def respond_to_search_query():
     tags = data.get("tags", "").lower().split()
 
     results = find_results(acronym, tags)
+    return jsonify(results)
+
+@app.route("/search_groq", methods=["POST"])
+def respond_to_search_groq_query():
+    """
+    Handles search query from frontend
+    :return: json-formatted response to send to frontend
+    """
+    data = request.json
+
+    acronym = data.get("acronym", "").upper()
+    tags = data.get("tags", "").lower().split()
+
+    results = groq_usage.get_search_response(acronym, tags)
+    if not results:
+        return jsonify({"error": "No results found"}), 404
     return jsonify(results)
 
 

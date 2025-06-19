@@ -7,16 +7,6 @@ app = Flask(__name__)
 CSV_FILE = "data/acronyms.csv"
 
 
-def parse_line(raw_acronym):
-    short = raw_acronym['Acronym']
-    term = raw_acronym['Term']
-    definition = raw_acronym['Definition']
-    tags = ast.literal_eval(raw_acronym['Tags'])
-    misc = ast.literal_eval(raw_acronym['Misc'])
-    new_acronym = {"acronym": short, "term": term, "definition": definition, "tags": tags, 'misc': misc}
-    return new_acronym
-
-
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -31,8 +21,18 @@ def load_acronyms():
     return acronyms
 
 
+def parse_line(raw_acronym):
+    short = raw_acronym['Acronym']
+    term = raw_acronym['Term']
+    definition = raw_acronym['Definition']
+    tags = ast.literal_eval(raw_acronym['Tags'])
+    misc = ast.literal_eval(raw_acronym['Misc'])
+    new_acronym = {"acronym": short, "term": term, "definition": definition, "tags": tags, "misc": misc}
+    return new_acronym
+
+
 @app.route("/search", methods=["POST"])
-def respond_to_search_query():
+def manual_search_query():
     """
     Handles search query from frontend
     :return: json-formatted response to send to frontend
@@ -44,6 +44,7 @@ def respond_to_search_query():
 
     results = find_results(acronym, tags)
     return jsonify(results)
+
 
 @app.route("/search_groq", methods=["POST"])
 def respond_to_search_groq_query():
@@ -66,7 +67,7 @@ def respond_to_search_groq_query():
 def find_results(target_acronym: str, tags: list) -> list:
     """
     :param target_acronym: target acronym to search for
-    :param tags: list of tags associated in the search
+    :param tags: list of str tags associated in the search
     :return: the list response results
     """
     acronyms = load_acronyms()
@@ -82,7 +83,6 @@ def find_results(target_acronym: str, tags: list) -> list:
 
     # Sort results by score
     results_sorted = sorted(results_sorted, key=lambda x: x[1], reverse=True)
-    print(results_sorted)
     return [entry for entry, score in results_sorted]
 
 
@@ -97,8 +97,8 @@ def define_acronym():
     acronym = data.get("acronym", "").upper()
     term = data.get("term", "")
     definition = data.get("definition", "")
-    tags = data.get("tags", "").lower().split()
-    misc = data.get("misc", "").lower().split()
+    tags = data.get("tags", "")  # TODO <- this should be a list
+    misc = data.get("misc", "")
 
     result = save_acronym(acronym, term, definition, tags, misc)
     return jsonify(result)

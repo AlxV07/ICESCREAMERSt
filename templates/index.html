@@ -2,22 +2,36 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ICESCREAMERSt</title>
   <link rel="stylesheet" href="/static/style.css">
-  <script src=""
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.3.31/pdf.min.mjs"></script>
   <script src="/static/script.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
   <!-- Header Section -->
   <div class="header">
-    <div class="container">
-        <h1> Database</h1>
-        <p>Discover, learn, and contribute acronym definitions</p>
-    </div>
+      <h1>The Most Future-Proof, Long-Range, and Inspiring Database</h1>
+      <p>Discover, learn, and contribute acronym definitions</p>
 </div>
     <!--Tab Section-->
-    <!--Manual Entry-->
+    <div class="container">
+      <div class="tab-container">
+        <div class="tab-nav">
+          <button class="tab-button active" data-tab="manual">Manual Entry</button>
+          <button class="tab-button" data-tab="pdf">PDF Upload</button>
+        </div>
+
+      <div class="container">
+        <div class="tab-container-manual">
+          <h1>Manual Entry</h1>
+        </div>
+      </div>
+    </div>
     <!--PDF Entry-->
     <!--Search Bar-->
     <div class="main">

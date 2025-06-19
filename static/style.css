@@ -1,36 +1,3 @@
-/* Typography
-Primary Font: Poppins or Nunito Sans
-
-Modern, approachable sans-serif with rounded characteristics
-Warm yet professional feeling
-Excellent for digital interfaces
-
-Accent Font: DM Sans or Inter Display
-
-For headings and UI elements
-Clean geometric forms with friendly curves
-Creates visual hierarchy without being cold
-
-Color Palette
-Core Brand Colors:
-
-Refined Red: #E63946 (softer than traditional State Farm red)
-Warm Navy: #264653 (sophisticated, less harsh than pure navy)
-Rich Charcoal: #2A2D34 (main text with warmth)
-
-Supporting Palette:
-
-Soft Cream: #F8F6F3 (warm alternative to stark white)
-Light Sage: #F1F3F2 (subtle background tint)
-Warm Gray: #8D9094 (secondary text with personality)
-
-Accent Colors:
-
-Energetic Coral: #F77F00 (highlights and CTAs)
-Fresh Teal: #06AED5 (links and interactive states)
-Success Mint: #2D9A87 (confirmations)
-Gentle Purple: #7209B7 (premium features or categories) */
-
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
@@ -45,11 +12,6 @@ body {
   padding: 40px 0;
   background-color: #E63946;
   text-align: center;
-  /*width: 100%;
-  max-width: 1250px;
-  padding: 1.5rem;
-  border-radius: 8px;
-  margin: auto; */
 }
 
 .header h1 {
@@ -157,7 +119,6 @@ body {
   font-size: 20px;
 }
 
-/* TOGGLE SWITCH STYLE */
 .switch {
   position: relative;
   display: inline-block;
@@ -201,75 +162,8 @@ input:checked + .slider:before {
   transform: translateX(24px);
 }
 
-/*
-TRISHA'S code
-/* Typography
-Primary Font: Poppins or Nunito Sans
-
-Modern, approachable sans-serif with rounded characteristics
-Warm yet professional feeling
-Excellent for digital interfaces
-
-Accent Font: DM Sans or Inter Display
-
-For headings and UI elements
-Clean geometric forms with friendly curves
-Creates visual hierarchy without being cold
-
-Color Palette
-Core Brand Colors:
-
-Refined Red: #E63946 (softer than traditional State Farm red)
-Warm Navy: #264653 (sophisticated, less harsh than pure navy)
-Rich Charcoal: #2A2D34 (main text with warmth)
-
-Supporting Palette:
-
-Soft Cream: #F8F6F3 (warm alternative to stark white)
-Light Sage: #F1F3F2 (subtle background tint)
-Warm Gray: #8D9094 (secondary text with personality)
-
-Accent Colors:
-
-Energetic Coral: #F77F00 (highlights and CTAs)
-Fresh Teal: #06AED5 (links and interactive states)
-Success Mint: #2D9A87 (confirmations)
-Gentle Purple: #7209B7 (premium features or categories) */
-
-body {
-  margin: 0;
-  font-family: "Poppins", sans-serif;
-  color: #333;
-  background-color: #f8f6f3;
-}
 
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
-
-.header {
-  color: #f8f6f3;
-  padding: 40px 0;
-  background-color: #e63946;
-  text-align: center;
-  /*width: 100%;
-  max-width: 1250px;
-  padding: 1.5rem;
-  border-radius: 8px;
-  margin: auto; */
-}
-
-.header h1 {
-  font-size: 2.5rem;
-  margin-bottom: 10px;
-  font-weight: 700;
-  font-weight: bold;
-}
-
-.header p {
-  font-size: 1.1rem;
-  opacity: 0.9;
-  font-style: italic;
-  margin-bottom: 30px;
-}
 
 .container {
   display: flex;
@@ -357,18 +251,6 @@ body {
 textarea.form-input {
   resize: vertical;
   min-height: 80px;
-}
-
-/* PDF Upload Styles */
-.upload-area {
-  border: 2px dashed #ddd;
-  border-radius: 8px;
-  padding: 40px 20px;
-  text-align: center;
-  background-color: #fafafa;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  margin-bottom: 20px;
 }
 
 .upload-area:hover {
@@ -608,16 +490,16 @@ input:checked + .slider:before {
 }
 
 .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr); /* 4 columns */
-      max-width: 600px;
-      margin-right: 20px;
-      margin-top: 20px;
-    }
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 600px;
+    margin-right: 20px;
+    margin-top: 20px;
+}
 
-    .cell {
-      padding: 10px;
-      background: #f0f0f0;
-      text-align: left;
-      border: 1px solid #ccc;
-    }
+.cell {
+    padding: 10px;
+    background: #f0f0f0;
+    text-align: left;
+    border: 1px solid #ccc;
+}

@@ -1,0 +1,21 @@
+Acronym,Term,Definition,Tags
+API,Application Programming Interface,A set of functions and protocols for building software applications,Software Development
+CPU,Central Processing Unit,The primary component of a computer that performs calculations,Computing
+RAM,Random Access Memory,Temporary memory used by computers to store data for quick access,Computing
+HTML,HyperText Markup Language,Standard language for creating web pages,Web Development
+CSS,Cascading Style Sheets,Language used to style HTML documents,Web Development
+SQL,Structured Query Language,Language for managing and querying databases,Databases
+JSON,JavaScript Object Notation,Lightweight data-interchange format,Data Exchange
+XML,eXtensible Markup Language,Markup language for encoding documents,Data Exchange
+IDE,Integrated Development Environment,Software for writing and testing code,Software Development
+OOP,Object-Oriented Programming,Programming paradigm based on objects,Software Development
+GUI,Graphical User Interface,Visual interface for user interaction,Software Development
+CLI,Command Line Interface,Text-based interface for user interaction,Software Development
+SDK,Software Development Kit,Collection of tools for software development,Software Development
+HTTP,HyperText Transfer Protocol,Protocol for transferring web pages,Web Development
+FTP,File Transfer Protocol,Protocol for transferring files over a network,Networking
+DNS,Domain Name System,System for translating domain names to IP addresses,Networking
+IP,Internet Protocol,Set of rules for sending data across networks,Networking
+SSL,Secure Sockets Layer,Protocol for securing internet connections,Security
+SSH,Secure Shell,Protocol for secure remote login,Security
+REST,Representational State Transfer,Architectural style for web services,Web Development

@@ -7,7 +7,7 @@ async function search() {
   const acronym = document.getElementById("acronym").value;
   const context = document.getElementById("context").value;
 
-  const response = await fetch("/lookup", {
+  const response = await fetch("/search", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ acronym, context })

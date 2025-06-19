@@ -12,9 +12,8 @@ async function search() {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ acronym, context })
   });
-
   const results = await response.json();
-
+  console.log(results)
   await handleSearchResponse(results);
 }
 
@@ -29,14 +28,14 @@ async function define() {
 // === Frontend Util Methods ===
 
 
-// TODO: Front end ppl pls make this work
 async function handleSearchResponse(response) {
   /*
   Handles search-query-response from endpoint
   response: search-query-response in established data format
   */
   const resultsDiv = document.getElementById("results");
-  resultsDiv.innerHTML = results.length
-    ? results.map(r => `<p><strong>${r.expansion}</strong>: ${r.description}</p>`).join("")
-    : "<p>No results found.</p>";
+  console.log(response);
+  resultsDiv.innerHTML = JSON.stringify(response);
+  // TODO: Temporary; just displaying stringified display
+  // change to setting innerHTML to be styled response
 }

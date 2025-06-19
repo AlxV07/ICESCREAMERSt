@@ -5,14 +5,16 @@ from flask import Flask, render_template, request, jsonify
 app = Flask(__name__)
 CSV_FILE = "data/acronyms.csv"
 
+
 def parse_line(raw_acronym):
-    short=raw_acronym['Acronym']
-    term=raw_acronym['Term']
+    short = raw_acronym['Acronym']
+    term = raw_acronym['Term']
     definition = raw_acronym['Definition']
-    tags=ast.literal_eval(raw_acronym['Tags'])
-    misc=ast.literal_eval(raw_acronym['Misc'])
-    new_acronym = {"acronym":short, "term":term, "defintion":definition, "tags":tags, 'misc':misc}
+    tags = ast.literal_eval(raw_acronym['Tags'])
+    misc = ast.literal_eval(raw_acronym['Misc'])
+    new_acronym = {"acronym": short, "term": term, "defintion": definition, "tags": tags, 'misc': misc}
     return new_acronym
+
 
 @app.route("/")
 def index():
@@ -51,7 +53,6 @@ def find_results(target_acronym: str, tags: list) -> list:
     :return: the list response results
     """
     acronyms = load_acronyms()
-
 
     results_sorted = []
     for entry in acronyms:

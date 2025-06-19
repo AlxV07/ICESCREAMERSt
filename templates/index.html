@@ -15,14 +15,14 @@
 <body>
 
 
-  <!-- Header Section -->
+<!-- Header Section -->
   <div class="header">
       <h1>The Most Future-Proof, Long-Range, and Inspiring Database</h1>
       <p>Discover, learn, and contribute acronym definitions</p>
   </div>
 
 
-    <!--Tab Section-->
+<!--Tab Section-->
 
 
     <div class="container">
@@ -32,7 +32,8 @@
           <button class="tab-button" data-tab="pdf">PDF Upload</button>
         </div>
       </div>
-    <!--Manual Entry-->
+
+      <!--Manual Entry-->
       
     <div class="tab-content active" id="manual-tab">
       <h2 style="text-align: center; margin-bottom: 20px;">Add New Acronym</h2>
@@ -47,8 +48,8 @@
                   <input type="text" id="definition" class="form-input" required placeholder="e.g., Application Programming Interface">
               </div>
               <div class="form-group">
-                  <label for="context">Tags</label>
-                  <select id="context" class="form-input" multiple>
+                  <label for="tags_manual">Tags</label>
+                  <select id="tags_manual" class="form-input">
                     <option value="A">A</option>
                     <option value="B">B</option>
                     <option value="C">C</option>
@@ -68,7 +69,7 @@
     </div>
   </div>
 
-    <!--PDF Entry-->
+<!--PDF Entry-->
   
     <div class="tab-content" id="pdf-tab">
       <h2 style="text-align: center; margin-bottom: 20px;">Extract Acronyms from PDF</h2>
@@ -91,7 +92,49 @@
           <button type="button" class="remove-file" id="removeFile">×</button>
       </div>
 
-    <!--Search Bar-->
+      <div class="extraction-options">
+        <h4>Extraction Options</h4>
+        <div class="option-group">
+            <div class="checkbox-group">
+                <input type="checkbox" id="extractDefinitions" checked>
+                <label for="extractDefinitions">Extract acronym definitions automatically</label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="includeContext" checked>
+                <label for="includeContext">Include surrounding context</label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="autoCategory">
+                <label for="autoCategory">Auto-categorize acronyms</label>
+            </div>
+        </div>
+        <div class="form-group">
+          <label for="tags_pdf">Tags</label>
+          <select id="tags_pdf" class="form-input">
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+          </select>
+        </div>
+
+        <div class="progress-container" id="progressContainer">
+          <div class="progress-bar" id="progressBar">0%</div>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 20px;">
+          <button type="button" class="submit-btn" id="extractBtn" disabled>Extract Acronyms</button>
+        </div>
+
+        <div class="extracted-preview" id="extractedPreview">
+          <h4>Extracted Acronyms <span id="extractedCount">(0)</span></h4>
+          <div id="previewList"></div>
+          <div style="text-align: center; margin-top: 15px;">
+              <button type="button" class="submit-btn" id="addAllBtn">Add All to Database</button>
+          </div>
+        </div>
+    </div>
+
+<!--Search Bar-->
     <div class="main">
       <div class="search-box">
         <input id="acronym" placeholder="Term">

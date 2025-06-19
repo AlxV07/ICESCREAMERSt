@@ -1,3 +1,18 @@
+
+let currentFilter = 'all';
+let allResults = [];
+let filteredResults = [];
+let extractedAcronyms = [];
+
+const API_BASE_URL = 'http://localhost:5000/api';
+
+  // Initialize the application
+  document.addEventListener('DOMContentLoaded', function() {
+    define();
+    loadAllAcronyms();
+    setupPDFUpload();
+  });
+
 //  === Endpoint Connection Methods ===
 
 async function search() {
@@ -19,6 +34,7 @@ async function search() {
 
 
 async function define() {
+  
   const acronym = document.getElementById("defineAcronym").value;
   const term = document.getElementById("defineTerm").value;
   const definition = document.getElementById("defineDefinition").value;

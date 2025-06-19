@@ -22,14 +22,26 @@ async function search() {
     body: JSON.stringify({ acronym, context })
   });
   const results = await response.json();
+  console.log(results);
   await handleSearchResponse(results);
 }
 
 
 async function define() {
-  /*
+  const acronym = document.getElementById("defineAcronym").value;
+  const term = document.getElementById("defineTerm").value;
+  const definition = document.getElementById("defineDefinition").value;
+  const tags = document.getElementById("defineTags").value;
+  const misc = document.getElementById("defineMisc").value;
 
-  */
+  const response = await fetch("/define", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ acronym, term, definition, tags, misc })
+  });
+  const results = await response.json();
+  console.log(results);
+  await handleDefineResponse(results);
 }
 
 
@@ -84,4 +96,8 @@ async function handleSearchResponse(response) {
     final_html += generateHTMLFromTerm(a);
   }
   resultsDiv.innerHTML = final_html;
+}
+
+async function handleDefineResponse(response) {
+  // TODO: Implement
 }

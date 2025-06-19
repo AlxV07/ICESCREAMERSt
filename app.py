@@ -3,7 +3,6 @@ import csv
 from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
-
 CSV_FILE = "data/acronyms.csv"
 
 
@@ -59,23 +58,33 @@ def find_results(target_acronym: str, tags: list) -> list:
 
 @app.route("/define", methods=["POST"])
 def define_acronym():
+    """
+    :return: define status in expected data format to front end
+    """
+
     data = request.json
+
     acronym = data.get("acronym", "").upper()
     term = data.get("term", "")
     definition = data.get("definition", "")
     tags = data.get("tags", "").lower().split()
+    misc = data.get("misc", "").lower().split()
 
-    if not acronym or not term:
-        return jsonify({"error": "Acronym and term are required"}), 400
-
-    save_acronym(acronym, term, definition, tags)
-    return jsonify({"message": "Acronym added successfully"}), 201
+    result = save_acronym(acronym, term, definition, tags, misc)
+    return jsonify(result)
 
 
-def save_acronym(acronym, term, definition, context):
-    with open(CSV_FILE, 'a', newline='', encoding='utf-8') as f:
-        writer = csv.writer(f)
-        writer.writerow([acronym.upper(), term, definition, context.lower()])
+def save_acronym(acronym: str, term: str, definition: str, tags: list, misc: list) -> dict:
+    try:
+        with open(CSV_FILE, 'a', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            writer.writerow([acronym, term, definition, tags, misc])
+        success = True
+        info = str(f"Successfully added acronym {acronym} to database.")
+    except Exception as e:
+        success = False
+        info = str(e)
+    return {"status": "success" if success else "error", "info": info}
 
 
 if __name__ == "__main__":

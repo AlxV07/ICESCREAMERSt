@@ -1,4 +1,5 @@
 from groq import Groq
+
 import dotenv
 import os
 system_prompt_search = '''
@@ -51,6 +52,7 @@ Output:
 
 '''
 
+
 def get_api_key():
     # Replace with your actual method of retrieving the API key
     dotenv.load_dotenv()
@@ -58,17 +60,20 @@ def get_api_key():
     return api_key
 def get_csv_data():
     return open('data/acronyms.csv', 'r').read()
+
+
 client = Groq(api_key=get_api_key())
+
 
 def get_search_response(query: str, tags: list) -> str:
     global system_prompt_search
-    csv_data= get_csv_data()
+    csv_data = get_csv_data()
     if len(tags) == 0:
-      tag_prompt = "No tags were provided."
+        tag_prompt = "No tags were provided."
     elif len(tags) == 1:
-      tag_prompt = f'The tag associated with the search is: {tags[0]}'
+        tag_prompt = f'The tag associated with the search is: {tags[0]}'
     else:
-      tag_prompt=f'Here are the tags associated with the search: {', '.join(tags)}'
+      tag_prompt=f'Here are the tags associated with the search: {", ".join(tags)}'
     prompt_user=f"What does {query} stand for? {tag_prompt}"
     print(f"Prompt to Groq: {prompt_user}")
     completion = client.chat.completions.create(

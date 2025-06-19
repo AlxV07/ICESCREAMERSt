@@ -123,6 +123,14 @@ def define_acronym():
 
 
 def save_acronym(acronym: str, term: str, definition: str, tags: list, misc: list) -> dict:
+    '''
+    :param acronym: acronym to save
+    :param term: term associated with the acronym
+    :param definition: definition of the acronym
+    :param tags: list of tags associated with the acronym
+    :param misc: list of miscellaneous information associated with the acronym
+    :return: status of the save operation
+    '''
     try:
         with open(CSV_FILE, 'a', newline='', encoding='utf-8') as f:
             writer = csv.writer(f)

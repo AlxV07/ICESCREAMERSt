@@ -15,7 +15,7 @@ async function search() {
 
   const results = await response.json();
 
-  handleSearchResponse(results);
+  await handleSearchResponse(results);
 }
 
 
@@ -29,6 +29,7 @@ async function define() {
 // === Frontend Util Methods ===
 
 
+// TODO: Front end ppl pls make this work
 async function handleSearchResponse(response) {
   /*
   Handles search-query-response from endpoint

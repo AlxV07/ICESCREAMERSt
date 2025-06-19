@@ -611,8 +611,8 @@ input:checked + .slider:before {
       display: grid;
       grid-template-columns: repeat(2, 1fr); /* 4 columns */
       max-width: 600px;
-      margin: 20px;
-      font-family: sans-serif;
+      margin-right: 20px;
+      margin-top: 20px;
     }
 
     .cell {

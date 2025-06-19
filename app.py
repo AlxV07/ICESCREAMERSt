@@ -12,7 +12,7 @@ def parse_line(raw_acronym):
     definition = raw_acronym['Definition']
     tags = ast.literal_eval(raw_acronym['Tags'])
     misc = ast.literal_eval(raw_acronym['Misc'])
-    new_acronym = {"acronym": short, "term": term, "defintion": definition, "tags": tags, 'misc': misc}
+    new_acronym = {"acronym": short, "term": term, "definition": definition, "tags": tags, 'misc': misc}
     return new_acronym
 
 
@@ -65,6 +65,7 @@ def find_results(target_acronym: str, tags: list) -> list:
     results_sorted = sorted(results_sorted, key=lambda x: x[1], reverse=True)
     print(results_sorted)
     return [entry for entry, score in results_sorted]
+
 
 @app.route("/define", methods=["POST"])
 def define_acronym():

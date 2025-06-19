@@ -1,6 +1,8 @@
-import csv, ast
-import os
+import ast
+import csv
+
 from flask import Flask, render_template, request, jsonify
+
 import groq_usage
 
 app = Flask(__name__)
@@ -89,7 +91,6 @@ def find_results(target_acronym: str, tags: list) -> list:
             score += 5
         elif entry['acronym'].upper() in target_acronym.upper() or target_acronym.upper() in entry['acronym'].upper():
             score += 3
-
 
         tag_score = sum(keyword.strip().lower() in [tag.strip().lower() for tag in entry["tags"]] for keyword in tags)
         score += tag_score

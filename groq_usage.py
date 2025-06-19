@@ -1,7 +1,8 @@
-from groq import Groq
+import os
 
 import dotenv
-import os
+from groq import Groq
+
 system_prompt_search = '''
 You are an LLM that processes search queries and finds matching acronyms from a CSV database. 
 

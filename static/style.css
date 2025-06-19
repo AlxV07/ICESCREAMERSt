@@ -33,17 +33,17 @@ Gentle Purple: #7209B7 (premium features or categories) */
 
 body {
   margin: 0;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   color: #333;
-  background-color: #F8F6F3;
+  background-color: #f8f6f3;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
 
 .header {
-  color: #F8F6F3;
+  color: #f8f6f3;
   padding: 40px 0;
-  background-color: #E63946;
+  background-color: #e63946;
   text-align: center;
   /*width: 100%;
   max-width: 1250px;
@@ -76,7 +76,13 @@ body {
   opacity: 0.6;
 }
 
+.tab-content {
+  display: none;
+}
 
+.tab-content.active {
+  display: block;
+}
 
 /* Form Styles */
 .form-row {
@@ -89,7 +95,7 @@ body {
 
 @media (max-width: 768px) {
   .form-row {
-      grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
   }
 }
 
@@ -239,7 +245,6 @@ textarea.form-input {
   transition: background-color 0.3s ease;
 }
 
-
 .extraction-options {
   background-color: #f8f9fa;
   border-radius: 6px;
@@ -251,7 +256,6 @@ textarea.form-input {
   margin-bottom: 15px;
   color: #333;
 }
-
 
 .progress-container {
   background-color: #f0f0f0;
@@ -272,15 +276,6 @@ textarea.form-input {
   font-size: 0.8rem;
   font-weight: 600;
 }
-
-
-
-
-
-
-
-
-
 
 .main {
   flex: 1;
@@ -332,4 +327,3 @@ textarea.form-input {
 .results p {
   margin-bottom: 1rem;
 }
-

@@ -56,12 +56,17 @@ def respond_to_search_groq_query():
     acronym = data.get("acronym", "").upper()
     tags = data.get("tags", "").lower().split()
     print(tags)
-
-    results = ast.literal_eval(groq_usage.get_search_response(acronym, tags))
-    print(f"Results from Groq: {results}")
-    if not results:
-        return jsonify({"error": "No results found"}), 404
-    return jsonify(results)
+    string_result=groq_usage.get_search_response(acronym, tags)
+    try:
+        results = ast.literal_eval(string_result)
+        print(f"Results from Groq: {results}")
+        if not results:
+            return jsonify({"error": "No results found"}), 404
+        return jsonify(results)
+    except Exception as e:
+        print(f"Error parsing Groq response: {e}")
+        print(string_result)
+        return jsonify({"error": "Failed to parse Groq response"}), 500
 
 
 def find_results(target_acronym: str, tags: list) -> list:

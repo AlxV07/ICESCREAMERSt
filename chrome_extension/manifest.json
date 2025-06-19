@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Highlight Pop-Up",
+  "version": "1.0",
+  "description": "Shows a popup when you highlight a word.",
+  "permissions": ["scripting"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ]
+}

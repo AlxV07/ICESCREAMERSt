@@ -55,8 +55,13 @@ client = Groq(api_key=get_api_key())
 def get_search_response(query: str, tags: list) -> str:
     global system_prompt_search
     csv_data= get_csv_data()
-    prompt_user=f"what does {query} stand for? Here are the tags associated with the search: {', '.join(tags)}"
-    print(prompt_user)
+    if len(tags) == 0:
+      tag_prompt = "No tags were provided."
+    elif len(tags) == 1:
+      tag_prompt = f'The tag associated with the search is: {tags[0]}'
+    else:
+      tag_prompt=f'Here are the tags associated with the search: {', '.join(tags)}'
+    prompt_user=f"what does {query} stand for? {tag_prompt}"
     completion = client.chat.completions.create(
         model="meta-llama/llama-4-scout-17b-16e-instruct",
         messages=[
@@ -69,9 +74,9 @@ def get_search_response(query: str, tags: list) -> str:
             "content": prompt_user
         }
         ],
-        temperature=0.48,
-        max_completion_tokens=1024,
-        top_p=1,
+        temperature=0.0,
+        max_completion_tokens=2048,
+        top_p=0.9,
         stream=False,
         response_format={"type": "json_object"},
         stop=None,

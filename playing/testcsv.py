@@ -7,7 +7,8 @@ def parse_line(raw_acronym):
     term=raw_acronym['term']
     definition = raw_acronym['definition']
     tags=ast.literal_eval(raw_acronym['tags'])
-    new_acronym = {"acronym":short, "term":term, "defintion":definition, "tags":tags}
+    misc=ast.literal_eval(raw_acronym['misc'])
+    new_acronym = {"acronym":short, "term":term, "defintion":definition, "tags":tags, 'misc':misc}
     return new_acronym
 
 acronyms = []
@@ -18,7 +19,8 @@ with open(CSV_FILE, 'r', encoding='utf-8') as f:
             'acronym': row['Acronym'].upper(),
             'term': row['Term'],
             'definition': row['Definition'],
-            'tags': row['Tags'].lower()
+            'tags': row['Tags'].lower(),
+            'misc':row['Misc']
         })
 print(f"Loaded {len(acronyms)} acronyms from {CSV_FILE}")
 for acronym in acronyms:

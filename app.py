@@ -53,10 +53,18 @@ def find_results(target_acronym: str, tags: list) -> list:
     """
     acronyms = load_acronyms()
 
-    # Basic relevance sort by context keyword match (placeholder)
-    results = [entry for entry in acronyms if entry['acronym'] == target_acronym]
-    results_sorted = sorted(results, key=lambda x: sum(keyword in x["tags"] for keyword in tags), reverse=True)
-    return results_sorted
+    
+    results_sorted = []
+    for entry in acronyms:
+        score = 0
+        if entry['acronym'] == target_acronym:
+            score += 10
+        score += sum(keyword in entry["tags"] for keyword in tags)
+        results_sorted.append((entry, score))
+
+    # Sort results by score
+    results_sorted = sorted(results_sorted, key=lambda x: x[1], reverse=True)
+    return [entry for entry, score in results_sorted]
 
 @app.route("/define", methods=["POST"])
 def define_acronym():

@@ -4,7 +4,7 @@ You are a llm that processes search queries. If there are multiple matches, retu
 Return **ONLY** valid JSON. Return **ONLY** the content from the csv file provided. Do **NOT** include any other information or explanations. 
 If you cannot find any matches, return an empty list for "matches" and set "status" to "not_found". If you find matches, set "status" to "found".
 If the acronym provided is a prefix of one found in the csv, return the full acronym found in the csv, with all of its data.
-For example, if the user searches for "QSR", and the csv contains "QSR" and "QSRP", return both full "QSR" entry and the "QSRP" entry.
+For example, if the user searches for "QSR", and the csv contains "QSR" and "QSRP", return both full "QSR" entry and the "QSRP" entry, but the "QSRP" entry should have a lower relevance score.
 The JSON should have the following structure:
 {
   "status": "found" | "not_found",
@@ -55,8 +55,14 @@ client = Groq(api_key=get_api_key())
 def get_search_response(query: str, tags: list) -> str:
     global system_prompt_search
     csv_data= get_csv_data()
-    prompt_user=f"what does {query} stand for? Here are the tags associated with the search: {', '.join(tags)}"
-    print(prompt_user)
+    if len(tags) == 0:
+      tag_prompt = "No tags were provided."
+    elif len(tags) == 1:
+      tag_prompt = f'The tag associated with the search is: {tags[0]}'
+    else:
+      tag_prompt=f'Here are the tags associated with the search: {', '.join(tags)}'
+    prompt_user=f"what does {query} stand for? {tag_prompt}"
+    print(f"Prompt to Groq: {prompt_user}")
     completion = client.chat.completions.create(
         model="meta-llama/llama-4-scout-17b-16e-instruct",
         messages=[
@@ -69,9 +75,9 @@ def get_search_response(query: str, tags: list) -> str:
             "content": prompt_user
         }
         ],
-        temperature=0.48,
-        max_completion_tokens=1024,
-        top_p=1,
+        temperature=0.0,
+        max_completion_tokens=2048,
+        top_p=0.9,
         stream=False,
         response_format={"type": "json_object"},
         stop=None,

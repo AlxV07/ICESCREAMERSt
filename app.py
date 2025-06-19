@@ -56,8 +56,9 @@ def find_results(target_acronym: str, tags: list) -> list:
     results_sorted = []
     for entry in acronyms:
         score = 0
-        if entry['acronym'] == target_acronym:
+        if entry['acronym'].upper() == target_acronym.upper():
             score += 10
+        
         score += sum(keyword in entry["tags"] for keyword in tags)
         results_sorted.append((entry, score))
 

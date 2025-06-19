@@ -33,16 +33,6 @@ def load_acronyms():
             })
     return acronyms
 
-def save_acronym(acronym, term, definition, context):
-    with open(CSV_FILE, 'a', newline='', encoding='utf-8') as f:
-        writer = csv.writer(f)
-        writer.writerow([acronym.upper(), term, definition, context.lower()])
-
-@app.route("/")
-def index():
-    return render_template("index.html")
-
-
 @app.route("/search", methods=["POST"])
 def search():
     data = request.json
@@ -56,6 +46,18 @@ def search():
     results_sorted = sorted(results, key=lambda x: sum(keyword in x["tags"] for keyword in search_tags), reverse=True)
     print(f"Search results for acronym '{acronym}': {results_sorted}")
     return jsonify(results_sorted)
+
+def save_acronym(acronym, term, definition, context):
+    with open(CSV_FILE, 'a', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerow([acronym.upper(), term, definition, context.lower()])
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+
+
 
 @app.route("/define", methods=["POST"])
 def define_acronym():

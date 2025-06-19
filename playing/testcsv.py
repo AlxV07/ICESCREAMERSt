@@ -1,7 +1,6 @@
 import csv, os
 import ast
 CSV_FILE = r'C:\Users\aruns\Documents\GitHub\ICESCREAMERSt\data\acronyms.csv'
-def parse_line
 acronyms = []
 with open(CSV_FILE, 'r', encoding='utf-8') as f:
     reader = csv.DictReader(f)

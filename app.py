@@ -22,27 +22,6 @@ def load_acronyms():
                 'acronym': row['Acronym'].upper(),
                 'term': row['Term'],
                 'definition': row['Definition'],
-<<<<<<< HEAD
-                'context_keywords': row['Context'].lower().split()
-            })
-    return acronyms
-
-def save_acronym(acronym, term, definition, context):
-    with open(CSV_FILE, 'a', newline='', encoding='utf-8') as f:
-        writer = csv.writer(f)
-        writer.writerow([acronym.upper(), term, definition, context.lower()])
-
-@app.route("/")
-def index():
-    return render_template("index.html")
-
-
-@app.route("/search", methods=["POST"])
-def search():
-    data = request.json
-    acronym = data.get("acronym", "").upper()
-    search_context = data.get("context", "").lower().split()
-=======
                 'tags': row['Tags'].lower().split(),
                 'misc': row['Misc'].lower().split()
             })
@@ -76,15 +55,6 @@ def find_results(target_acronym: str, tags: list) -> list:
     results = [entry for entry in acronyms if entry['acronym'] == target_acronym]
     results_sorted = sorted(results, key=lambda x: sum(keyword in x["tags"] for keyword in tags), reverse=True)
     return results_sorted
->>>>>>> c6f9a9a3a0e1b212b2aaa209481793e9003f8009
-
-    acronyms = load_acronyms()
-
-    results = [entry for entry in acronyms if entry['acronym'] == acronym]
-    # Basic relevance sort by context keyword match (placeholder)
-    results_sorted = sorted(results, key=lambda x: sum(keyword in x["context_keywords"] for keyword in search_context), reverse=True)
-
-    return jsonify(results_sorted)
 
 @app.route("/define", methods=["POST"])
 def define_acronym():

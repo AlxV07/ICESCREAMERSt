@@ -90,7 +90,6 @@ def find_results(target_acronym: str, tags: list) -> list:
         elif entry['acronym'].upper() in target_acronym.upper() or target_acronym.upper() in entry['acronym'].upper():
             score += 3
 
-
         tag_score = sum(keyword.strip().lower() in [tag.strip().lower() for tag in entry["tags"]] for keyword in tags)
         score += tag_score
 

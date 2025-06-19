@@ -1,6 +1,7 @@
 import csv, ast
 import os
 from flask import Flask, render_template, request, jsonify
+import groq_usage
 
 app = Flask(__name__)
 CSV_FILE = "data/acronyms.csv"
@@ -44,6 +45,23 @@ def respond_to_search_query():
     results = find_results(acronym, tags)
     return jsonify(results)
 
+@app.route("/search_groq", methods=["POST"])
+def respond_to_search_groq_query():
+    """
+    Handles search query from frontend
+    :return: json-formatted response to send to frontend
+    """
+    data = request.json
+
+    acronym = data.get("acronym", "").upper()
+    tags = data.get("context", "").lower().split()
+
+    results = ast.literal_eval(groq_usage.get_search_response(acronym, tags))
+    print(f"Results from Groq: {results}")
+    if not results:
+        return jsonify({"error": "No results found"}), 404
+    return jsonify(results)
+
 
 def find_results(target_acronym: str, tags: list) -> list:
     """
@@ -56,8 +74,9 @@ def find_results(target_acronym: str, tags: list) -> list:
     results_sorted = []
     for entry in acronyms:
         score = 0
-        if entry['acronym'] == target_acronym:
+        if entry['acronym'].upper() == target_acronym.upper():
             score += 10
+        
         score += sum(keyword in entry["tags"] for keyword in tags)
         results_sorted.append((entry, score))
 

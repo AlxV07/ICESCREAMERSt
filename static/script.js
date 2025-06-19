@@ -16,7 +16,7 @@ async function search() {
   const acronym = document.getElementById("acronym").value;
   const context = document.getElementById("tags").value;
 
-  const response = await fetch("/search", {
+  const response = await fetch("/search_groq", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ acronym, context })

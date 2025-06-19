@@ -1,25 +1,32 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>ICESCREAMERSt</title>
   <link rel="stylesheet" href="/static/style.css">
+  <script src=""
   <script src="/static/script.js" defer></script>
 </head>
 
 <body>
-  <div class="container">
-    <div class="sidebar">
-      <h1>ICESCREAMERSt</h1>
-      <p class="version">v1.0</p>
+  <!-- Header Section -->
+  <div class="header">
+    <div class="container">
+        <h1> Database</h1>
+        <p>Discover, learn, and contribute acronym definitions</p>
     </div>
-
+</div>
+    <!--Tab Section-->
+    <!--Manual Entry-->
+    <!--PDF Entry-->
+    <!--Search Bar-->
     <div class="main">
       <div class="search-box">
         <input id="acronym" placeholder="Term">
         <input id="context" placeholder="Context">
         <button onclick="search()">Search</button>
       </div>
+    <!--All Results w Tabs-->
       <div id="results" class="results"></div>
     </div>
   </div>

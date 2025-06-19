@@ -42,7 +42,6 @@ def respond_to_search_query():
     tags = data.get("tags", "").lower().split()
 
     results = find_results(acronym, tags)
-    print(results, type(results))
     return jsonify(results)
 
 
@@ -64,6 +63,7 @@ def find_results(target_acronym: str, tags: list) -> list:
 
     # Sort results by score
     results_sorted = sorted(results_sorted, key=lambda x: x[1], reverse=True)
+    print(results_sorted)
     return [entry for entry, score in results_sorted]
 
 @app.route("/define", methods=["POST"])

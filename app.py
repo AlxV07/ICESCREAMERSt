@@ -29,23 +29,9 @@ def load_acronyms():
                 'acronym': row['Acronym'].upper(),
                 'term': row['Term'],
                 'definition': row['Definition'],
-                'tags': row['Tags'].lower().split()
+                'context_keywords': row['Context'].lower().split()
             })
     return acronyms
-
-@app.route("/search", methods=["POST"])
-def search():
-    data = request.json
-    acronym = data.get("acronym", "").upper()
-    search_tags = data.get("tags", "").lower().split()
-
-    acronyms = load_acronyms()
-
-    results = [entry for entry in acronyms if entry['acronym'] == acronym]
-    # Basic relevance sort by context keyword match (placeholder)
-    results_sorted = sorted(results, key=lambda x: sum(keyword in x["tags"] for keyword in search_tags), reverse=True)
-    print(f"Search results for acronym '{acronym}': {results_sorted}")
-    return jsonify(results_sorted)
 
 def save_acronym(acronym, term, definition, context):
     with open(CSV_FILE, 'a', newline='', encoding='utf-8') as f:
@@ -57,7 +43,19 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/search", methods=["POST"])
+def search():
+    data = request.json
+    acronym = data.get("acronym", "").upper()
+    search_context = data.get("context", "").lower().split()
 
+    acronyms = load_acronyms()
+
+    results = [entry for entry in acronyms if entry['acronym'] == acronym]
+    # Basic relevance sort by context keyword match (placeholder)
+    results_sorted = sorted(results, key=lambda x: sum(keyword in x["context_keywords"] for keyword in search_context), reverse=True)
+
+    return jsonify(results_sorted)
 
 @app.route("/define", methods=["POST"])
 def define_acronym():
@@ -65,13 +63,13 @@ def define_acronym():
     acronym = data.get("acronym", "").upper()
     term = data.get("term", "")
     definition = data.get("definition", "")
-    tags = data.get("tags", "").lower().split()
+    context = data.get("context", "").lower()
 
     if not acronym or not term:
         return jsonify({"error": "Acronym and term are required"}), 400
 
-    save_acronym(acronym, term, definition, tags)
+    save_acronym(acronym, term, definition, context)
     return jsonify({"message": "Acronym added successfully"}), 201
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000)

@@ -1,12 +1,19 @@
 import csv, os
-
-test_csv = 'playing/test.csv'
-
-if not os.path.exists(test_csv):
-    with open(test_csv, 'w', newline='', encoding='utf-8') as f:
-        writer = csv.writer(f)
-        writer.writerow(['A', 'B', 'C', 'D'])
-
-with open(test_csv, 'a', newline='', encoding='utf-8') as f:
-    writer = csv.writer(f)
-    writer.writerow(['A,1', 'B1', 'C1', 'D1'])
+import ast
+CSV_FILE = r'C:\Users\aruns\Documents\GitHub\ICESCREAMERSt\data\acronyms.csv'
+def parse_line
+acronyms = []
+with open(CSV_FILE, 'r', encoding='utf-8') as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        acronyms.append({
+            'acronym': row['Acronym'].upper(),
+            'term': row['Term'],
+            'definition': row['Definition'],
+            'tags': row['Tags'].lower()
+        })
+print(f"Loaded {len(acronyms)} acronyms from {CSV_FILE}")
+for acronym in acronyms:
+    print(f"Acronym: {acronym['acronym']}, Term: {acronym['term']}, Definition: {acronym['definition']}, Tags: {acronym['tags']}")
+    short=acronym['acronym']
+    term=acronym['term']

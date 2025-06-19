@@ -5,12 +5,12 @@ async function search() {
   Called by search button; sends search query to server, expects response in established search-query-response data format.
   */
   const acronym = document.getElementById("acronym").value;
-  const context = document.getElementById("context").value;
+  const tags = document.getElementById("tags").value;
 
   const response = await fetch("/search", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ acronym, context })
+    body: JSON.stringify({ acronym, tags })
   });
   const results = await response.json();
   console.log(results)

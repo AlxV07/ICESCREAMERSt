@@ -53,9 +53,10 @@ def respond_to_search_groq_query():
     data = request.json
 
     acronym = data.get("acronym", "").upper()
-    tags = data.get("tags", "").lower().split()
+    tags = data.get("context", "").lower().split()
 
-    results = groq_usage.get_search_response(acronym, tags)
+    results = ast.literal_eval(groq_usage.get_search_response(acronym, tags))
+    print(f"Results from Groq: {results}")
     if not results:
         return jsonify({"error": "No results found"}), 404
     return jsonify(results)

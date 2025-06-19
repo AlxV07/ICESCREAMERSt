@@ -4,30 +4,31 @@ You are a llm that processes search queries. If there are multiple matches, retu
 Return **ONLY** valid JSON. 
 Here is an example. Choose one of the status codes to output. 
 {
-  "status": "found" | "notFound" | "error",
+  "status": "found",
   "matches": [
     {
-      "Acronym": "AI",
-      "Term": "Artificial Intelligence",
-      "Definition": "The simulation of human intelligence in machines",
-      "Tags": ["Software Development", "Data Science"],
-      "Misc": ["example.com", "contact@gmail.com"],
-      "relevance": 0.9
+      "Acronym": "QSR",
+      "Term": "Quick Service Restaurant",
+      "Definition": "A type of restaurant that offers fast food cuisine and minimal table service",
+      "Tags": ["Fast Food", "Hospitality"],
+      "Misc": ["qsrmagazine.com", "info@fastdine.net"],
+      "relevance": 0.95
     },
     {
-      "Acronym": "AI",
-      "Term": "Adobe Illustrator",
-      "Definition": "A vector graphics editor developed by Adobe",
-      "Tags": ["Design", "Software"],
-      "Misc": ["example.com", "contact@gmail.com"],
-      "relevance": 0.1
+      "Acronym": "QSR",
+      "Term": "Quarterly Sales Report",
+      "Definition": "A financial summary of a restaurant's performance over a fiscal quarter",
+      "Tags": ["Finance", "Restaurant Management"],
+      "Misc": ["salesdatahub.org", "finance@chaincorp.com"],
+      "relevance": 0.05
     }
   ]
 }
+
 '''
 def get_api_key():
     # Replace with your actual method of retrieving the API key
-    return "your_api_key_here"
+    return "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"
 def get_csv_data():
     return open('data/acronyms.csv', 'r').read()
 client = Groq(api_key=get_api_key())
@@ -35,6 +36,8 @@ client = Groq(api_key=get_api_key())
 def get_search_response(query: str, tags: list) -> str:
     global system_prompt_search
     csv_data= get_csv_data()
+    prompt_user=f"what does {query} stand for? Here are the tags associated with the search: {', '.join(tags)}"
+    print(prompt_user)
     completion = client.chat.completions.create(
         model="meta-llama/llama-4-scout-17b-16e-instruct",
         messages=[
@@ -44,7 +47,7 @@ def get_search_response(query: str, tags: list) -> str:
         },
         {
             "role": "user",
-            "content": f"what does {query} stand for? Here are the tags associated with the search: {', '.join(tags)}"
+            "content": prompt_user
         }
         ],
         temperature=0.48,
@@ -55,3 +58,9 @@ def get_search_response(query: str, tags: list) -> str:
         stop=None,
     )
     return completion.choices[0].message.content
+
+def write_csv_line(acronym: str, term: str, definition: str, tags: list, misc: list, filename: str = 'data/acronyms.csv'):
+    import csv
+    with open(filename, 'a', newline='', encoding='utf-8') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow([acronym, term, definition, tags, misc])

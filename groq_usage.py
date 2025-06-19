@@ -1,7 +1,10 @@
 from groq import Groq
 system_prompt_search = '''
 You are a llm that processes search queries. If there are multiple matches, return all of the matches, sorted by which one you think is most applicable using the tags. 
-Return **ONLY** valid JSON. Return **ONLY** the content from the csv file provided. Do **NOT** include any other information or explanations.
+Return **ONLY** valid JSON. Return **ONLY** the content from the csv file provided. Do **NOT** include any other information or explanations. 
+If you cannot find any matches, return an empty list for "matches" and set "status" to "not_found". If you find matches, set "status" to "found".
+If the acronym provided is a prefix of one found in the csv, return the full acronym found in the csv, with all of its data.
+For example, if the user searches for "QSR", and the csv contains "QSR" and "QSRP", return both full "QSR" entry and the "QSRP" entry.
 The JSON should have the following structure:
 {
   "status": "found" | "not_found",
@@ -59,7 +62,7 @@ def get_search_response(query: str, tags: list) -> str:
         messages=[
         {
             "role": "system",
-            "content": f"{system_prompt_search} Use this csv file and output only content from this file: {csv_data}"
+            "content": f"{system_prompt_search} Use this csv file and output **ONLY** content from this file: {csv_data}"
         },
         {
             "role": "user",

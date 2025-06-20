@@ -14,6 +14,9 @@ function setupEventListeners() {
   });
 }
 
+let defineContainer = null;
+let searchContainer = null;
+
 document.addEventListener("DOMContentLoaded", async function () {
   setupEventListeners();
   await populateTags();
@@ -36,9 +39,26 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
   });
 
-  const defineContainer = document.getElementById("defineContainer");
+  searchContainer = document.getElementById("searchContainer");
+  defineContainer = document.getElementById("defineContainer");
   defineContainer.remove();
 });
+
+const defineButton = document.getElementById("defineButton");
+const defineButtonContainer = document.getElementById("defineButtonContainer");
+defineButton.addEventListener("click", (e) => {
+    if (defineButton.textContent === 'Define New Term') {
+        document.body.appendChild(defineContainer);
+        searchContainer.remove();
+        defineButton.textContent = 'Back To Search';
+        defineButtonContainer.style.justifyContent = 'left';
+    } else {
+        document.body.appendChild(searchContainer);
+        defineContainer.remove();
+        defineButton.textContent = 'Define New Term';
+        defineButtonContainer.style.justifyContent = 'right';
+    }
+})
 
 function addListeners() {
     acronymInput.addEventListener("input", (e) => {

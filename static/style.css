@@ -225,23 +225,29 @@ input:checked + .slider:before {
   border-color: #e74c3c;
 }
 
+button {
+  transition: background-color 0.3s ease;
+}
+
 .submit-btn {
-  background-color: #e74c3c;
+  background-color: #D62311;
+  font-family: 'Poppins', sans-serif;
   color: white;
   border: none;
   padding: 12px 25px;
   border-radius: 4px;
   font-size: 1rem;
-  font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .submit-btn:hover {
-  background-color: #c0392b;
+  font-family: 'Poppins', sans-serif;
+  background-color: #81261e;
 }
 
 .submit-btn:disabled {
+  font-family: 'Poppins', sans-serif;
   background-color: #ccc;
   cursor: not-allowed;
 }

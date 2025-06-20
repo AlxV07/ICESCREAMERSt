@@ -205,7 +205,7 @@
 "SOX","Sarbanes-Oxley Act","US law regulating corporate accountability","['Finance','Legal']","['example.com','contact@gmail.com']"
 "PCAOB","Public Company Accounting Oversight Board","Organization overseeing audits","['Finance','Legal']","['example.com','contact@gmail.com']"
 "AQP","Auto Quote Purchase","State Farm's Java Springboot application for agents to file new auto quotes","['Auto','Policy','Quote']","['Team: Quote Busters','s.f/aqp']"
-"SIC","Service Integration Clients","Helps delegate classes communicate w/ remote SOAP and REST services.","['AWS', 'Migration']","['Creator: Tim Tye', 'Team: Quote Busters']"
+"SIC","Service Integration Clients","Helps delegate classes communicate w/ remote SOAP and REST services.","['AWS', 'Migration']","['Creator: Tim Tye', 'Team: Quote Busters', 'https://ps_auto_quote_purchase.sfgitlab.opr.statefarm.org/horizontal/autodocs/engineering/Technical-Architecture/SIC-And-SICUtils/']"
 "FASB","Financial Accounting Standards Board","Organization setting accounting standards","['Finance','Accounting']","['example.com','contact@gmail.com']"
 "EC2","Elastic Compute Cloud","Scalable virtual servers in the AWS cloud","['AWS','Cloud Computing','Compute']","['example.com','contact@gmail.com']"
 "S3","Simple Storage Service","Scalable object storage service by AWS","['AWS','Cloud Computing','Storage']","['example.com','contact@gmail.com']"

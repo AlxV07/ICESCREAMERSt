@@ -235,7 +235,7 @@ function generateHTMLFromTerm(term_data, isAI) {
     misc_html = ''
     misc.forEach(m => {
         misc_html += `
-        <div style="border: 1px solid gray; padding: 10px;">${m}</div>
+        <div style="border: 1px solid gray; padding: 10px; overflow-wrap: break-word;">${m}</div>
         `
     })
     misc_html = `<div>${misc_html}</div>`

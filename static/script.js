@@ -14,9 +14,9 @@ function setupEventListeners() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
   setupEventListeners();
-  populateTags();
+  await populateTags();
   const tabButtons = document.querySelectorAll(".tab-button");
   const tabContents = document.querySelectorAll(".tab-content");
 
@@ -35,6 +35,9 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById(target).classList.add("active");
     });
   });
+
+  const defineContainer = document.getElementById("defineContainer");
+  defineContainer.remove();
 });
 
 function addListeners() {
@@ -147,7 +150,10 @@ function generateHTMLFromTerm(term_data, isAI) {
     tag_html = ''
     tags.forEach(tag => {
         tag_html += `
-            <div style="color: black; background-color: red; width: fit-content; padding: 7px; margin-left: 5px; border-radius: 15px;">${tag}</div>
+            <div style="color: white;
+                background-color: #D62311;
+                width: fit-content;
+                padding: 7px; margin-left: 5px; border-radius: 15px;">${tag}</div>
         `
     })
     tag_html = `<div style="display: flex; flex-direction: horizontal">${tag_html}</div>`
@@ -207,14 +213,13 @@ async function handleGroqSearchResponse(response) {
 async function handlePopulateTagsResponse(response) {
     const select = document.getElementById('defineTags');
     select.innerHTML = '';
-        response.forEach(tag => {
-            const option = document.createElement('option');
-            option.value = tag;
-            option.textContent = tag;
-            select.appendChild(option);
-        });
+    response.forEach(tag => {
+        const option = document.createElement('option');
+        option.value = tag;
+        option.textContent = tag;
+        select.appendChild(option);
+    });
 }
-
 
 let AISearch = false;
 

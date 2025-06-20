@@ -143,8 +143,9 @@ async function define() {
 
 async function populateTags() {
     const response = await fetch("/tags", {
-        method: "GET",
+        method: "POST",
         headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({})
     });
     const results = await response.json();
     await handlePopulateTagsResponse(results);

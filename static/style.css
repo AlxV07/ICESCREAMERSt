@@ -9,7 +9,7 @@ body {
 
 .header {
   color: #F8F6F3;
-  padding: 40px 0;
+  padding: 10px 0;
   background-color: #E63946;
   text-align: center;
 }
@@ -443,6 +443,9 @@ textarea.form-input {
   margin-top: 10px;
   margin-right: 10px;
   font-size: 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
 }
 
 /* TOGGLE SWITCH STYLE */

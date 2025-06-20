@@ -13,32 +13,30 @@
 </head>
 
 <body>
-  <!-- Header Section -->
-  <div class="header">
-      <h1>The Most Future-Proof, Long-Range, and Inspiring Database</h1>
-      <p>Discover, learn, and contribute acronym definitions</p>
-    </div>
 
+<!-- Header Container -->
+<div class="header">
+    <h1>ICESCREAMERSt</h1>
+    <h3>The Most Future-Proof, Long-Range, and Inspiring Database</h3>
+    <p>Discover, learn, and contribute acronym definitions</p>
+</div>
 
-<!--Tab Section-->
+<!-- Define Container -->
 <div class="container">
-
-    <!--Manual Entry-->
-    
   <div class="tab-content active" id="manual-tab">
     <h2 style="text-align: center; margin-bottom: 20px;">Add New Acronym</h2>
     <form id="addAcronymForm">
         <div class="form-row">
             <div class="form-group">
-                <label for="acronym">Acronym *</label>
-                <input type="text" id="defineAcronym" class="form-input" required placeholder="e.g., API">
+                <label>Acronym *</label>
+                <input type="text" id="defineAcronym" class="form-input" required placeholder="e.g. API">
             </div>
             <div class="form-group">
-                <label for="definition">Definition *</label>
-                <input type="text" id="defineTerm" class="form-input" required placeholder="e.g., Application Programming Interface">
+                <label>Term *</label>
+                <input type="text" id="defineTerm" class="form-input" required placeholder="e.g. Application Programming Interface">
             </div>
             <div class="form-group">
-                <label for="tags_manual">Tags</label>
+                <label>Tags</label>
                 <select id="defineTags" class="form-input">
                   <option value="A">A</option>
                   <option value="B">B</option>
@@ -48,8 +46,8 @@
         </div>
         <div class="form-row description-row">
             <div class="form-group" style="grid-column: 1 / -1;">
-                <label for="description">Additional Description (Optional)</label>
-                <textarea id="defineDefinition" class="form-input" placeholder="Provide more context, usage examples, or related information"></textarea>
+                <label>Definition *</label>
+                <textarea id="defineDefinition" class="form-input" placeholder="Provide a more in-depth detailed definition."></textarea>
             </div>
         </div>
         <div style="text-align: center;">
@@ -59,45 +57,41 @@
   </div>
 </div>
 
-<!--Search Bar-->
+<!-- Search Container -->
 <div class="main">
-  <div class="search-box">
-    <input id="acronym" placeholder="Term">
-    <input id="tags" placeholder="Tags">
-    <button onclick="search()">Search</button>
-  </div>
-  <!--All Results w Tabs-->
-  <div id="results" class="results"></div>
+    <div class="search-box">
+        <input id="acronym" placeholder="Term">
+        <input id="tags" placeholder="Tags">
+        <button onclick="search()">Search</button>
+    </div>
+    <div id="results" class="results"></div>
 </div>
 
+<!-- Settings Container -->
 <button id="settingsButton" onclick="toggleSettings()">⚙️</button>
 <div id="settingsPanel" class="settings hidden">
-  <!-- Settings content goes here -->
-  <h2>Settings</h2>
-
+    <h2>Settings</h2>
     <div style="display: flex; flex-direction: horizontal; text-align: center;">
-      <label style="text-align: center; margin-top: 20px; margin-right: 10px;">Manual Search</label>
-      <label class="switch">
-        <input type="checkbox" id="toggleAISearch" onchange="toggleAISearch(this)">
-        <span class="slider"></span>
-      </label>
-      <label  style="text-align: center; margin-top: 20px; margin-left: 10px;">AI Search</label>
+        <label style="text-align: center; margin-top: 20px; margin-right: 10px;">Manual Search</label>
+        <label class="switch">
+            <input type="checkbox" id="toggleAISearch" onchange="toggleAISearch(this)">
+            <span class="slider"></span>
+        </label>
+        <label  style="text-align: center; margin-top: 20px; margin-left: 10px;">AI Search</label>
     </div>
-
     <div>
-      <div class="grid">
-        <div style="font-weight: bold" class="cell">Manual Search</div>
-        <div style="font-weight: bold" class="cell">AI Search</div>
-        <div class="cell">- Instantaneous Search Speed</div>
-        <div class="cell">- Slightly Slower Search Load Speed</div>
-        <div class="cell">- Rigid Prefix & Realtime Search (e.g. search "AW", matches "AWS" while typing)</div>
-        <div class="cell">- Flexible, Context-Based Search (powered by LLM scanning)</div>
-        <div class="cell">- Tags provide strict term filtering by tag</div>
-        <div class="cell">- Tags provide general contextual information</div>
-      </div>
+        <div class="grid">
+            <div style="font-weight: bold" class="cell">Manual Search</div>
+            <div style="font-weight: bold" class="cell">AI Search</div>
+            <div class="cell">- Instantaneous Search Speed</div>
+            <div class="cell">- Slightly Slower Search Load Speed</div>
+            <div class="cell">- Rigid Prefix & Realtime Search (e.g. search "AW", matches "AWS" while typing)</div>
+            <div class="cell">- Flexible, Context-Based Search (powered by LLM scanning)</div>
+            <div class="cell">- Tags provide strict term filtering by tag</div>
+            <div class="cell">- Tags provide general contextual information</div>
+        </div>
     </div>
-  </div>
+</div>
 
 </body>
-
 </html>

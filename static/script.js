@@ -70,17 +70,10 @@ async function groqSearch() {
   */
   const acronym = acronymInput.value;
   const tags = document.getElementById("tags").value;
-<<<<<<< HEAD
-  document.getElementById("results").innerHTML = `<iframe style="width:fit-content;height:fit-content" src="https://www.icegif.com/wp-content/uploads/2023/07/icegif-1268.gif"></iframe>Loading...`
-  const gif = document.getElementbyId("results");
-  gif.style.width = "100%";
-  gif.style.height = "auto";
-=======
   document.getElementById("results").innerHTML = `<iframe id="gif" style="width:fit-content;height:fit-content" src="https://www.icegif.com/wp-content/uploads/2023/07/icegif-1268.gif"></iframe>Loading...`
   const gif = document.getElementById("gif")
   gif.style.width = "600px"
   gif.style.height = "400px"
->>>>>>> 7fc15c5f475406fa62c2bab069038b6c6cb3f72b
 
   const response = await fetch("/search_groq", {
     method: "POST",
@@ -152,16 +145,16 @@ function generateHTMLFromTerm(term_data, isAI) {
     misc_html = ''
     misc.forEach(m => {
         misc_html += `
-        <div style="border: 1px solid gray">${m}</div>
+        <div style="border: 1px solid gray; padding: 10px;">${m}</div>
         `
     })
     misc_html = `<div>${misc_html}</div>`
 
     return `
-    <div>
+    <div style="margin-bottom: 80px;">
         <h2 style="margin-top: 4px;">${acronym} - ${term}</h2>
         ${tag_html}<br>
-        ${def}<br>
+        ${def}<br><br>
         ${misc_html}
     </div>
     `

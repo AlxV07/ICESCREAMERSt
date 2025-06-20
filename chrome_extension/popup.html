@@ -1,9 +1,22 @@
 <!DOCTYPE html>
 <html>
-<head><title>Popup</title></head>
-<body>
-  <h3>Message from Flask:</h3>
-  <div id="output">Loading...</div>
-  <script src="popup.js"></script>
-</body>
-</html>
+  <head>
+    <title>My App in Popup</title>
+    <style>
+      body, html {
+        margin: 0;
+        padding: 0;
+        height: 600px;
+        width: 400px;
+      }
+      iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+    </style>
+  </head>
+  <body>
+    <iframe src="http://127.0.0.1:5002"></iframe>
+  </body>
+</ht

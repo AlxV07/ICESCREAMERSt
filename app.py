@@ -160,7 +160,7 @@ def find_all_tag_matches_endpoint():
     """
     data = request.json
     prefix = data.get("payload", "").lower()
-    tags = find_all_tags_endpoint()
+    tags = find_all_tags()
     filtered_tags = [tag for tag in tags if tag.startswith(prefix)]
     return jsonify(filtered_tags)
 

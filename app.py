@@ -154,15 +154,22 @@ def find_all_tags() -> list:
     return sorted(list(tags))
 
 @app.route("/tags", methods=["POST"])
-def find_all_tags_endpoint() -> list:
+def find_all_tag_matches_endpoint():
     """
     :return: list of all tags in the database that start with the given prefix
     """
     data = request.json
     prefix = data.get("payload", "").lower()
-    tags = find_all_tags()
+    tags = find_all_tags_endpoint()
     filtered_tags = [tag for tag in tags if tag.startswith(prefix)]
     return jsonify(filtered_tags)
 
+@app.route("/tags", methods=["GET"])
+def find_all_tags_endpoint():
+    """
+    :return: all tags in the database
+    """
+    return jsonify(find_all_tags())
+
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5001, debug=True)

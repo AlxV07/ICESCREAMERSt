@@ -16,6 +16,7 @@ function setupEventListeners() {
 
 document.addEventListener("DOMContentLoaded", function () {
   setupEventListeners();
+  populateTags();
   const tabButtons = document.querySelectorAll(".tab-button");
   const tabContents = document.querySelectorAll(".tab-content");
 
@@ -70,17 +71,14 @@ async function groqSearch() {
   */
   const acronym = acronymInput.value;
   const tags = document.getElementById("tags").value;
-<<<<<<< HEAD
   document.getElementById("results").innerHTML = `<iframe style="width:fit-content;height:fit-content" src="https://www.icegif.com/wp-content/uploads/2023/07/icegif-1268.gif"></iframe>Loading...`
   const gif = document.getElementbyId("results");
   gif.style.width = "100%";
   gif.style.height = "auto";
-=======
   document.getElementById("results").innerHTML = `<iframe id="gif" style="width:fit-content;height:fit-content" src="https://www.icegif.com/wp-content/uploads/2023/07/icegif-1268.gif"></iframe>Loading...`
   const gif = document.getElementById("gif")
   gif.style.width = "600px"
   gif.style.height = "400px"
->>>>>>> 7fc15c5f475406fa62c2bab069038b6c6cb3f72b
 
   const response = await fetch("/search_groq", {
     method: "POST",
@@ -122,6 +120,15 @@ async function define() {
   });
   const results = await response.json();
   await handleDefineResponse(results);
+}
+
+async function populateTags() {
+    const response = await fetch("/tags", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+    });
+    const results = await response.json();
+    await handlePopulateTagsResponse(results);
 }
 
 // === Frontend Util Methods ===
@@ -201,6 +208,17 @@ async function handleGroqSearchResponse(response) {
   resultsDiv.innerHTML = final_html;
 }
 
+async function handlePopulateTagsResponse(response) {
+    const select = document.getElementById('defineTags');
+    select.innerHTML = '';
+        response.forEach(tag => {
+            const option = document.createElement('option');
+            option.value = tag;
+            option.textContent = tag;
+            select.appendChild(option);
+        });
+}
+
 
 let AISearch = false;
 
@@ -219,9 +237,5 @@ function toggleSettings() {
 }
 
 function toggleAISearch(checkbox) {
-  if (checkbox.checked) {
-    AISearch = true;
-  } else {
-    AISearch = false;
-  }
+  AISearch = checkbox.checked;
 }

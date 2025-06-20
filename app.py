@@ -89,7 +89,6 @@ def find_results(target_acronym: str, tags: list) -> list:
         elif entry['acronym'].upper() in target_acronym.upper() or target_acronym.upper() in entry['acronym'].upper():
             score += 3
 
-
         tag_score = sum(keyword.strip().lower() in [tag.strip().lower() for tag in entry["tags"]] for keyword in tags)
         score += tag_score
 
@@ -142,6 +141,7 @@ def save_acronym(acronym: str, term: str, definition: str, tags: list, misc: lis
         info = str(e)
     return {"status": "success" if success else "error", "info": info}
 
+
 def find_all_tags() -> list:
     """
     :return: list of all tags in the database
@@ -152,6 +152,7 @@ def find_all_tags() -> list:
         for tag in entry['tags']:
             tags.add(tag.strip().lower())
     return sorted(list(tags))
+
 
 @app.route("/tags", methods=["POST"])
 def find_all_tag_matches_endpoint():
@@ -164,12 +165,14 @@ def find_all_tag_matches_endpoint():
     filtered_tags = [tag for tag in tags if tag.startswith(prefix)]
     return jsonify(filtered_tags)
 
+
 @app.route("/tags", methods=["GET"])
 def find_all_tags_endpoint():
     """
     :return: all tags in the database
     """
     return jsonify(find_all_tags())
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5002, debug=True)

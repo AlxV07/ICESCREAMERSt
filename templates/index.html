@@ -17,14 +17,18 @@
 <!-- Header Container -->
 <div class="header">
     <h1>ICESCREAMERSt</h1>
-    <h3>The Most Future-Proof, Long-Range, and Inspiring Database</h3>
-    <p>Discover, learn, and contribute acronym definitions</p>
+    <h3>The Most Future-Proof, Long-Range, & Inspiring Database</h3>
+    <p>Discover, learn, & contribute terms</p>
+</div>
+
+<div style="display: flex; flex-direction: horizontal; justify-content: right;">
+    <button id="defineButton" style="margin-top: 10px; margin-right: 10px;">Define New Term</button>
 </div>
 
 <!-- Define Container -->
-<div class="container">
+<div id="defineContainer" class="main">
   <div class="tab-content active" id="manual-tab">
-    <h2 style="text-align: center; margin-bottom: 20px;">Add New Acronym</h2>
+    <h2 style="text-align: center; margin-bottom: 20px;">Define New Term</h2>
     <form id="addAcronymForm">
         <div class="form-row">
             <div class="form-group">
@@ -58,7 +62,8 @@
 </div>
 
 <!-- Search Container -->
-<div class="main">
+<div id="searchContainer" class="main">
+    <h2>Search For Terms</h2>
     <div class="search-box">
         <input id="acronym" placeholder="Term">
         <input id="tags" placeholder="Tags">
@@ -68,7 +73,7 @@
 </div>
 
 <!-- Settings Container -->
-<button id="settingsButton" onclick="toggleSettings()">⚙️</button>
+<button id="settingsButton" onclick="toggleSettings()">⚙</button>
 <div id="settingsPanel" class="settings hidden">
     <h2>Settings</h2>
     <div style="display: flex; flex-direction: horizontal; text-align: center;">

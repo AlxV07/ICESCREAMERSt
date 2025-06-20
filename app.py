@@ -167,13 +167,5 @@ def find_all_tag_matches_endpoint():
     return jsonify(filtered_tags)
 
 
-@app.route("/tags", methods=["GET"])
-def find_all_tags_endpoint():
-    """
-    :return: all tags in the database
-    """
-    return jsonify(find_all_tags())
-
-
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5002, debug=True)

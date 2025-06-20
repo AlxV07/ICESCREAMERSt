@@ -28,15 +28,18 @@ where users can quickly search find out what
 unfamiliar terms mean.
 
 ## How Hackday Went
-First time pretty much for all of us working in a team env for a hackathon so the codebase is disgusting 
+First time pretty much for all of us working in a team env for a hackathon so the codebase is not the prettiest
 (apologies, code reviewers), but we finished w/ an actually presentable project I think :D
 (Writing this at 2a.m. as we're finishing editing the presentation vid)
 
-App is started w/ `python3 app.py` (after installing required packages in `requirements.txt`);
+App is started w/ `python3 app.py` & going to the port the application is serving in browser (after installing required packages in `requirements.txt`);
 a `.env` file in the root-project directory w/ a `GROQ_API_KEY` var needs to be set to support AI-search.
 The `chrome_extension` folder can be loaded as an unpacked Chrome extension (enable dev mode in `chrome://extensions`)
 and will appear in the extension toolbar; requires `app.py` to be running right now to work though.
 
+Though of course there still remain technical hurdles to overcome to become a publicly-usable application
+(a secure submit system (perhaps linked to a State Farm account), complete AWS database integration, etc.),
+our application lays out a solution and illustrates a functional example of how such an application can serve a real need in corporate.
 
 
 ## Setup for Devs

@@ -40,7 +40,8 @@ def respond_to_search_query():
     data = request.json
 
     acronym = data.get("acronym", "").upper()
-    tags = data.get("tags", "").lower().split()
+    tags = data.get("tags", "").lower().split(",")
+    print(tags)
     results = find_results(acronym, tags)
     return jsonify(results)
 
@@ -55,8 +56,7 @@ def respond_to_search_groq_query():
     acronyms = load_acronyms()
 
     acronym = data.get("acronym", "").upper()
-    tags = data.get("tags", "").lower().split()
-    print(tags)
+    tags = data.get("tags", "").lower().split(",")
     string_result = groq_usage.get_search_response(acronym, tags)
     try:
         results = ast.literal_eval(string_result)
@@ -93,7 +93,7 @@ def find_results(target_acronym: str, tags: list) -> list:
         score += tag_score
 
         if len(tags) > 0:
-            if tag_score > 0:
+            if tag_score == len(tags):
                 results_sorted.append((entry, score))
         else:
             if score > 0:

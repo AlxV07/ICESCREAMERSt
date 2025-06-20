@@ -172,8 +172,4 @@ def find_all_tags_endpoint():
     return jsonify(find_all_tags())
 
 if __name__ == "__main__":
-<<<<<<< HEAD
-    app.run(host='0.0.0.0', port=5001, debug=True)
-=======
     app.run(host='0.0.0.0', port=5002, debug=True)
->>>>>>> 712de82 (Progress of the chrome extension. The website now appears in the chrome extension, but it doesn't run the program. Please fix Alex.)

@@ -1,6 +1,8 @@
-import csv, ast
-import os
+import ast
+import csv
+
 from flask import Flask, render_template, request, jsonify
+
 import groq_usage
 
 app = Flask(__name__)
@@ -41,7 +43,6 @@ def respond_to_search_query():
 
     acronym = data.get("acronym", "").upper()
     tags = data.get("tags", "").lower().split(",")
-    print(tags)
     results = find_results(acronym, tags)
     return jsonify(results)
 
@@ -93,11 +94,11 @@ def find_results(target_acronym: str, tags: list) -> list:
         score += tag_score
 
         if len(tags) > 0:
-            if tag_score == len(tags):
+            if tag_score == len(tags):  # all tags were satisfied
                 results_sorted.append((entry, score))
-        else:
-            if score > 0:
-                results_sorted.append((entry, score))
+                continue
+        if score > 0:
+            results_sorted.append((entry, score))
 
     results_sorted = sorted(results_sorted, key=lambda x: x[1], reverse=True)
     return [entry for entry, score in results_sorted]
@@ -111,11 +112,11 @@ def define_acronym():
 
     data = request.json
 
-    acronym = data.get("acronym", "").upper()
+    acronym = data.get("acronym", "")
     term = data.get("term", "")
     definition = data.get("definition", "")
-    tags = data.get("tags", "").lower().split()
-    misc = data.get("misc", "").lower().split()
+    tags = data.get("tags", "")
+    misc = data.get("misc", "")
 
     result = save_acronym(acronym, term, definition, tags, misc)
     return jsonify(result)
@@ -135,7 +136,7 @@ def save_acronym(acronym: str, term: str, definition: str, tags: list, misc: lis
             writer = csv.writer(f)
             writer.writerow([acronym, term, definition, tags, misc])
         success = True
-        info = str(f"Successfully added acronym {acronym} to database.")
+        info = str(f'Successfully added acronym "{acronym}" to database!')
     except Exception as e:
         success = False
         info = str(e)

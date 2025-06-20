@@ -29,8 +29,8 @@
 <div id="defineContainer" class="main">
   <div class="tab-content active" id="manual-tab">
     <h2 style="text-align: center; margin-bottom: 20px;">Define New Term</h2>
-    <h5 style="text-align: center; margin-bottom: 20px;">* indicates required field</h5>
-    <form id="addAcronymForm">
+    <h5 style="text-align: center; margin-bottom: 20px;">"*" indicates required field</h5>
+    <div id="addAcronymForm">
         <div class="form-row">
             <div class="form-group">
                 <label>Acronym *</label>
@@ -62,14 +62,22 @@
         </div>
         <div class="form-row description-row">
             <div class="form-group" style="grid-column: 1 / -1;">
-                <label>Misc</label>
-                <textarea id="defineMisc" class="form-input" placeholder="Provide misc info: documentation links, good contacts for help, etc."></textarea>
+                <div style="display: flex; flex-direction: horizontal">
+                    <label>Misc</label>
+                    <button class="miscbut" id="misc-add">(+)</button>
+                    <button class="miscbut" id="misc-remove">(-)</button>
+                </div>
+                <div id="defineMiscContainer" style="border-radius: 5px; background-color: white;
+                         min-height: 30px;
+                         display: flex; flex-direction: column;
+                         border: 2px solid lightgray">
+                </div>
             </div>
         </div>
         <div style="text-align: center;">
-            <button type="submit" class="submit-btn">Define Term</button>
+            <button class="submit-btn" id="submitDefineTerm">Define Term</button>
         </div>
-    </form>
+    </div>
   </div>
 </div>
 

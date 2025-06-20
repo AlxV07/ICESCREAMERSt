@@ -39,10 +39,43 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
   });
 
+  document.getElementById('submitDefineTerm').addEventListener('click', e => {
+      define();
+  })
+
+    document.getElementById('misc-add').addEventListener('mouseenter', e => { document.getElementById('misc-add').style.color = '#D62311'; })
+    document.getElementById('misc-add').addEventListener('mouseleave', e => { document.getElementById('misc-add').style.color = '#555'; })
+    document.getElementById('misc-add').addEventListener('click', e => {
+        const d = document.createElement('textarea');
+        d.classList.add('form-input');
+        d.placeholder = 'Provide misc info: documentation links, good contacts for help, etc. (one per line!)';
+        d.style.margin = '10px';
+        d.style.padding = '3px';
+        d.style.border = '1px solid gray';
+        d.addEventListener('click', e => {
+            if (selectedMiscDiv) {
+                selectedMiscDiv.style.border = '1px solid gray';
+            }
+            d.style.border = '2px solid black';
+            selectedMiscDiv = d;
+        })
+        d.click();
+        document.getElementById('defineMiscContainer').appendChild(d);
+    })
+    document.getElementById('misc-remove').addEventListener('mouseenter', e => { document.getElementById('misc-remove').style.color = '#D62311'; })
+    document.getElementById('misc-remove').addEventListener('mouseleave', e => { document.getElementById('misc-remove').style.color = '#555'; })
+    document.getElementById('misc-remove').addEventListener('click', e => {
+        if (selectedMiscDiv) {
+            selectedMiscDiv.remove();
+            selectedMiscDiv = null;
+        }
+    })
   searchContainer = document.getElementById("searchContainer");
   defineContainer = document.getElementById("defineContainer");
   defineContainer.remove();
 });
+
+let selectedMiscDiv = null;
 
 const defineButton = document.getElementById("defineButton");
 const defineButtonContainer = document.getElementById("defineButtonContainer");
@@ -128,8 +161,33 @@ async function define() {
   const acronym = document.getElementById("defineAcronym").value;
   const term = document.getElementById("defineTerm").value;
   const definition = document.getElementById("defineDefinition").value;
-  const tags = document.getElementById("defineTags").value;  // TODO; read from select's map, concat -> list
-  const misc = document.getElementById("defineMisc").value; // TODO; be from list
+  const tags = [...document.getElementById("defineTags").tags];
+  let misc = [];
+  Array.from(document.getElementById("defineMiscContainer").children).forEach(c => {
+    misc.push(c.value);
+  });
+
+  if (!(acronym && term && definition)) {
+    if (!acronym) {
+        document.getElementById('defineAcronym').style.borderColor = 'red';
+        setTimeout(() => {
+            document.getElementById('defineAcronym').style.borderColor = 'lightgray';
+        }, 1000)
+    }
+    if (!term) {
+        document.getElementById('defineTerm').style.borderColor = 'red';
+        setTimeout(() => {
+            document.getElementById('defineTerm').style.borderColor = 'lightgray';
+        }, 1000)
+    }
+    if (!definition) {
+        document.getElementById('defineDefinition').style.borderColor = 'red';
+        setTimeout(() => {
+            document.getElementById('defineDefinition').style.borderColor = 'lightgray';
+        }, 1000)
+    }
+    return;
+  }
 
   const response = await fetch("/define", {
     method: "POST",
@@ -210,7 +268,22 @@ async function handleManualSearchResponse(response) {
 }
 
 async function handleDefineResponse(response) {
-  // TODO: Implement
+    if (response.status === 'success') {
+        alert(response.info);
+      document.getElementById("defineAcronym").value = '';
+      document.getElementById("defineTerm").value = '';
+      document.getElementById("defineDefinition").value = '';
+
+      document.getElementById("defineTags").tags.clear();
+      Array.from(document.getElementById("defineTagsContainer").children).forEach(e => {
+        e.remove();
+      })
+      Array.from(document.getElementById("defineMiscContainer").children).forEach(e => {
+        e.remove();
+      })
+    } else {
+        alert(response.info)
+    }
 }
 
 async function handleGroqSearchResponse(response) {

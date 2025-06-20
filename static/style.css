@@ -245,6 +245,17 @@ button {
   transition: background-color 0.3s ease;
 }
 
+.miscbut {
+  font-family: 'Poppins', sans-serif;
+    background: none;
+    border: none;
+    margin-bottom: 5px;
+    margin-left: 0;
+    font-weight: bold;
+    cursor: pointer;
+  color: #555;
+}
+
 .submit-btn:hover {
   font-family: 'Poppins', sans-serif;
   background-color: #81261e;

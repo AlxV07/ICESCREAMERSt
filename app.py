@@ -57,7 +57,7 @@ def respond_to_search_groq_query():
     acronyms = load_acronyms()
 
     acronym = data.get("acronym", "").upper()
-    tags = data.get("tags", "").lower().split(",")
+    tags = data.get("tags", "")
     string_result = groq_usage.get_search_response(acronym, tags)
     try:
         results = ast.literal_eval(string_result)

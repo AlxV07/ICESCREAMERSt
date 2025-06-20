@@ -121,7 +121,7 @@ async function groqSearch() {
   Called by search button; sends search query to server, expects response in established search-query-response data format.
   */
   const acronym = acronymInput.value;
-  const tags = document.getElementById("tags").value;
+const tags = [...document.getElementById("searchTags").tags];
   document.getElementById("results").innerHTML = `<iframe id="gif" style="width:fit-content;height:fit-content" src="https://www.icegif.com/wp-content/uploads/2023/07/icegif-1268.gif"></iframe>Loading...`
   const gif = document.getElementById("gif")
   gif.style.width = "600px"

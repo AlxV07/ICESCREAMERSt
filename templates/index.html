@@ -29,6 +29,7 @@
 <div id="defineContainer" class="main">
   <div class="tab-content active" id="manual-tab">
     <h2 style="text-align: center; margin-bottom: 20px;">Define New Term</h2>
+    <h5 style="text-align: center; margin-bottom: 20px;">* indicates required field</h5>
     <form id="addAcronymForm">
         <div class="form-row">
             <div class="form-group">
@@ -40,18 +41,29 @@
                 <input type="text" id="defineTerm" class="form-input" required placeholder="e.g. Application Programming Interface">
             </div>
             <div class="form-group">
+                <label>Add Tag</label>
+                <select id="defineTags" class="form-input"></select>
+            </div>
+        </div>
+        <div class="form-row description-row">
+            <div class="form-group" style="grid-column: 1 / -1;">
                 <label>Tags</label>
-                <select id="defineTags" class="form-input">
-                  <option value="A">A</option>
-                  <option value="B">B</option>
-                  <option value="C">C</option>
-                </select>
+                <div id="defineTagsContainer" style="border-radius: 5px; background-color: white;
+                         min-height: 30px;
+                         border: 2px solid lightgray">
+                </div>
             </div>
         </div>
         <div class="form-row description-row">
             <div class="form-group" style="grid-column: 1 / -1;">
                 <label>Definition *</label>
-                <textarea id="defineDefinition" class="form-input" placeholder="Provide a more in-depth detailed definition."></textarea>
+                <textarea id="defineDefinition" class="form-input" required placeholder="Provide a more in-depth, detailed definition of the term."></textarea>
+            </div>
+        </div>
+        <div class="form-row description-row">
+            <div class="form-group" style="grid-column: 1 / -1;">
+                <label>Misc</label>
+                <textarea id="defineMisc" class="form-input" placeholder="Provide misc info: documentation links, good contacts for help, etc."></textarea>
             </div>
         </div>
         <div style="text-align: center;">
@@ -64,6 +76,7 @@
 <!-- Search Container -->
 <div id="searchContainer" class="main">
     <h2>Search For Terms</h2>
+    <h5 style="text-align: center; margin-top: 0;">(see Settings ⚙ for search configuration)</h5>
     <div class="search-box">
         <input id="acronym" placeholder="Term">
         <input id="tags" placeholder="Tags">

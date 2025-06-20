@@ -90,7 +90,7 @@ async function search() {
 
 async function groqSearch() {
   /*
-  Called by search button (if AI-search is enabled TODO-implement toggle); sends search query to server, expects response in established search-query-response data format.
+  Called by search button; sends search query to server, expects response in established search-query-response data format.
   */
   const acronym = acronymInput.value;
   const tags = document.getElementById("tags").value;
@@ -124,13 +124,12 @@ async function manualSearch() {
   await handleManualSearchResponse(results);
 }
 
-
 async function define() {
   const acronym = document.getElementById("defineAcronym").value;
   const term = document.getElementById("defineTerm").value;
   const definition = document.getElementById("defineDefinition").value;
-  const tags = document.getElementById("defineTags").value;
-  const misc = document.getElementById("defineMisc").value; // TODO: Need to add an id="defineMisc" element to index.html
+  const tags = document.getElementById("defineTags").value;  // TODO; read from select's map, concat -> list
+  const misc = document.getElementById("defineMisc").value; // TODO; be from list
 
   const response = await fetch("/define", {
     method: "POST",
@@ -173,7 +172,7 @@ function generateHTMLFromTerm(term_data, isAI) {
             <div style="color: white;
                 background-color: #D62311;
                 width: fit-content;
-                padding: 7px; margin-left: 5px; border-radius: 15px;">${tag}</div>
+                padding: 7px; margin-left: 5px; border-radius: 15px;">${tag.toLowerCase()}</div>
         `
     })
     tag_html = `<div style="display: flex; flex-direction: horizontal">${tag_html}</div>`
@@ -233,12 +232,51 @@ async function handleGroqSearchResponse(response) {
 async function handlePopulateTagsResponse(response) {
     const select = document.getElementById('defineTags');
     select.innerHTML = '';
+    select.tags = new Set();
+    select.appendChild(document.createElement('option'));
     response.forEach(tag => {
         const option = document.createElement('option');
         option.value = tag;
         option.textContent = tag;
         select.appendChild(option);
     });
+    const defineTagsContainer = document.getElementById('defineTagsContainer');
+    select.addEventListener('change', (e) => {
+        if (select.value !== "") {
+            if (select.tags.has(select.value)) {
+                return;
+            }
+            select.tags.add(select.value);
+            const tag = document.createElement('div');
+            tag.textContent = select.value;
+            tag.style.backgroundColor = '#D62311';
+            tag.style.width = 'fit-content';
+            tag.style.padding = '10px';
+            tag.style.margin = '10px';
+            tag.style.borderRadius = '5px';
+            tag.style.color = 'white';
+            const button = document.createElement('button');
+            button.addEventListener('click', e => {
+                select.tags.delete(tag.textContent);
+                tag.remove();
+                delete button;
+                delete tag;
+            })
+            button.addEventListener('mouseenter', e => {
+                button.style.color = 'black';
+            })
+            button.addEventListener('mouseleave', e => {
+                button.style.color = 'white';
+            })
+            button.style.color = 'white';
+            button.style.background = 'transparent';
+            button.style.border = 'none';
+            button.style.cursor = 'pointer';
+            button.textContent = '(X)';
+            tag.appendChild(button);
+            defineTagsContainer.appendChild(tag);
+        }
+    })
 }
 
 let AISearch = false;

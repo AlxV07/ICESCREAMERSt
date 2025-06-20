@@ -80,7 +80,7 @@ let selectedMiscDiv = null;
 const defineButton = document.getElementById("defineButton");
 const defineButtonContainer = document.getElementById("defineButtonContainer");
 defineButton.addEventListener("click", (e) => {
-    if (defineButton.textContent === 'Define New Term') {
+    if (defineButton.textContent === 'Define New Acronym') {
         document.body.appendChild(defineContainer);
         searchContainer.remove();
         defineButton.textContent = 'Back To Search';
@@ -88,7 +88,7 @@ defineButton.addEventListener("click", (e) => {
     } else {
         document.body.appendChild(searchContainer);
         defineContainer.remove();
-        defineButton.textContent = 'Define New Term';
+        defineButton.textContent = 'Define New Acronym';
         defineButtonContainer.style.justifyContent = 'right';
     }
 })
@@ -100,11 +100,6 @@ function addListeners() {
         }
     });
     acronymInput.addEventListener("keydown", (e) => {
-        if (e.code === 'Enter') {
-            search();
-        }
-    });
-    tagInput.addEventListener("keydown", (e) => {
         if (e.code === 'Enter') {
             search();
         }
@@ -146,7 +141,8 @@ async function manualSearch() {
   Called by search button; sends search query to server, expects response in established search-query-response data format.
   */
   const acronym = acronymInput.value;
-  const tags = document.getElementById("tags").value;
+const tags = [...document.getElementById("searchTags").tags];
+
 
   const response = await fetch("/search", {
     method: "POST",
@@ -304,7 +300,8 @@ async function handleGroqSearchResponse(response) {
 }
 
 async function handlePopulateTagsResponse(response) {
-    const select = document.getElementById('defineTags');
+    ['defineTags', 'searchTags'].forEach(selectId  => {
+    const select = document.getElementById(selectId)
     select.innerHTML = '';
     select.tags = new Set();
     select.appendChild(document.createElement('option'));
@@ -314,7 +311,7 @@ async function handlePopulateTagsResponse(response) {
         option.textContent = tag;
         select.appendChild(option);
     });
-    const defineTagsContainer = document.getElementById('defineTagsContainer');
+    const defineTagsContainer = document.getElementById(selectId+'Container');
     select.addEventListener('change', (e) => {
         if (select.value !== "") {
             if (select.tags.has(select.value)) {
@@ -351,6 +348,10 @@ async function handlePopulateTagsResponse(response) {
             defineTagsContainer.appendChild(tag);
         }
     })
+    if (selectId === 'searchTags') {
+        select.addEventListener('change', () => {search()});
+    }
+});
 }
 
 let AISearch = false;

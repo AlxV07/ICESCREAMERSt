@@ -42,7 +42,7 @@ def respond_to_search_query():
     data = request.json
 
     acronym = data.get("acronym", "").upper()
-    tags = data.get("tags", "").lower().split(",")
+    tags = data.get("tags", "")
     results = find_results(acronym, tags)
     return jsonify(results)
 
@@ -90,14 +90,18 @@ def find_results(target_acronym: str, tags: list) -> list:
         elif entry['acronym'].upper() in target_acronym.upper() or target_acronym.upper() in entry['acronym'].upper():
             score += 3
 
-        tag_score = sum(keyword.strip().lower() in [tag.strip().lower() for tag in entry["tags"]] for keyword in tags)
+        tag_score = 0
+        for selTag in entry['tags']:
+            for tag in tags:
+                if tag.strip().lower() == selTag.strip().lower():
+                    tag_score += 1
         score += tag_score
 
         if len(tags) > 0:
-            if tag_score == len(tags):  # all tags were satisfied
+            if tag_score >= len(tags):  # all tags were satisfied
                 results_sorted.append((entry, score))
                 continue
-        if score > 0:
+        elif score > 0:
             results_sorted.append((entry, score))
 
     results_sorted = sorted(results_sorted, key=lambda x: x[1], reverse=True)

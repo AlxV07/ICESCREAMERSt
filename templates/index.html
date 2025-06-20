@@ -22,13 +22,13 @@
 </div>
 
 <div id="defineButtonContainer" style="display: flex; flex-direction: horizontal; justify-content: right;">
-    <button id="defineButton" style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">Define New Term</button>
+    <button id="defineButton" style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">Define New Acronym</button>
 </div>
 
 <!-- Define Container -->
 <div id="defineContainer" class="main">
   <div class="tab-content active" id="manual-tab">
-    <h2 style="text-align: center; margin-bottom: 20px;">Define New Term</h2>
+    <h2 style="text-align: center; margin-bottom: 20px;">Define New Acronym</h2>
     <h5 style="text-align: center; margin-bottom: 20px;">"*" indicates required field</h5>
     <div id="addAcronymForm">
         <div class="form-row">
@@ -75,7 +75,7 @@
             </div>
         </div>
         <div style="text-align: center;">
-            <button class="submit-btn" id="submitDefineTerm">Define Term</button>
+            <button class="submit-btn" id="submitDefineTerm">Define Acronym</button>
         </div>
     </div>
   </div>
@@ -83,11 +83,24 @@
 
 <!-- Search Container -->
 <div id="searchContainer" class="main">
-    <h2>Search For Terms</h2>
+    <h2>Search For Acronyms</h2>
     <h5 style="text-align: center; margin-top: 0;">(see Settings ⚙ for search configuration)</h5>
     <div class="search-box">
-        <input id="acronym" placeholder="Term">
-        <input id="tags" placeholder="Tags">
+        <input id="acronym" placeholder="Acronym">
+
+        <div class="form-group">
+            <label>Add Tag</label>
+            <select id="searchTags" class="form-input"></select>
+        </div>
+        <div class="form-group">
+            <label>Tags</label>
+            <div id="searchTagsContainer" style="border-radius: 5px; background-color: white;
+                             min-height: 30px;
+                             border: 2px solid lightgray">
+            </div>
+        </div>
+<!--        <input id="tags" placeholder="Tags">-->
+
         <button onclick="search()">Search</button>
     </div>
     <div id="results" class="results"></div>

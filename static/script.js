@@ -16,6 +16,7 @@ function setupEventListeners() {
 
 document.addEventListener("DOMContentLoaded", function () {
   setupEventListeners();
+  populateTags();
   const tabButtons = document.querySelectorAll(".tab-button");
   const tabContents = document.querySelectorAll(".tab-content");
 
@@ -117,6 +118,15 @@ async function define() {
   await handleDefineResponse(results);
 }
 
+async function populateTags() {
+    const response = await fetch("/tags", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+    });
+    const results = await response.json();
+    await handlePopulateTagsResponse(results);
+}
+
 // === Frontend Util Methods ===
 
 function generateHTMLFromTerm(term_data, isAI) {
@@ -194,6 +204,17 @@ async function handleGroqSearchResponse(response) {
   resultsDiv.innerHTML = final_html;
 }
 
+async function handlePopulateTagsResponse(response) {
+    const select = document.getElementById('defineTags');
+    select.innerHTML = '';
+        response.forEach(tag => {
+            const option = document.createElement('option');
+            option.value = tag;
+            option.textContent = tag;
+            select.appendChild(option);
+        });
+}
+
 
 let AISearch = false;
 
@@ -212,9 +233,5 @@ function toggleSettings() {
 }
 
 function toggleAISearch(checkbox) {
-  if (checkbox.checked) {
-    AISearch = true;
-  } else {
-    AISearch = false;
-  }
+  AISearch = checkbox.checked;
 }
